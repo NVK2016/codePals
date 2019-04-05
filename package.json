@@ -1,0 +1,26 @@
+{
+  "name": "ProjectTwo",
+  "version": "1.0.0",
+  "description": "Fullstack Appplication Node server Express &amp; mysql",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NVK2016/ProjectTwo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NVK2016/ProjectTwo/issues"
+  },
+  "homepage": "https://github.com/NVK2016/ProjectTwo#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "mysql2": "^1.6.5"
+  }
+}
