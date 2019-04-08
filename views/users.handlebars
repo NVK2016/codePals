@@ -1,0 +1,24 @@
+<h1>Users</h1>
+
+<h3>Active Users:</h3>
+<ul>
+    {{#each users}}
+    {{#if active}}
+    <li>
+        {{firstName}} {{lastName}} {{email}} {{phone}} {{city}} {{state}}
+    </li>
+    {{/if}}
+    {{/each}}
+</ul>
+
+<h3>Inactive Users:</h3>
+<ul>
+    {{#each users}}
+    {{#unless active}}
+    <li>
+        {{firstName}} {{lastName}} {{email}} {{phone}} {{city}} {{state}}
+    </li>
+    {{/unless}}
+    {{/each}}
+</ul>
+
