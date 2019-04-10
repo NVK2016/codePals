@@ -1,0 +1,39 @@
+<h1>Activity Page</h1>
+{{!-- Calling Client JS --}}
+<script src="/assets/js/activity.js"></script>
+
+<button type="button" id="btn_updUser" class="btn btn-success">Edit profile</button> 
+<hr /> 
+<h2>Update My Acitivity</h2>
+
+			<div class="form-group">
+				<label for="name"> Name:</label>
+				<input id="fname" type="text" autocomplete="fname" disabled required><br>
+			</div>
+			<p> Cannot change </p>
+            <hr /> 
+			<div class="form-group">
+				<label for="location">Whats your new Meetup/Project Location:</label>
+				<input id="location" type="text" autocomplete="location" required><br>
+			</div>
+			<div class="form-group">
+				<label for="tentStartDate">Tentative Start Date:</label>
+				<input type="text" id="tentStartDate" required><br>
+			</div>
+			
+			<div class="form-group">
+				<label for="actType">Will it be a Meetup/Project ?</label>
+				<input type="text" id="actType" name="actType"  required><br>
+			</div>
+			<div class="form-group">
+				<label for="description">Describe a little what about thte project/meetup will do:</label>
+				<input id="description" type="text" autocomplete="description" required><br>
+				</div>
+				<div class="form-group">
+					<label for="city">State:</label>
+					<input id="state" type="text" autocomplete="city" required><br>
+				</div>
+				
+				<button class="btn-success" type="submit" id="btn_update"> Update</button>
+
+

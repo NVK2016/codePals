@@ -29,7 +29,8 @@ module.exports = function (app) {
 
      //Sigin Up page 
      app.get("/signup", function (req, res) {
-        console.log("Creating a new account", res);
+
+        console.log("HTML get singup url "); 
         //Render the index handle bar 
         res.render("signup", res);
     });
@@ -43,14 +44,14 @@ module.exports = function (app) {
 
     //Making it secure while transferrign data from client-side to server 
     app.get("/dashboard", function (req, res) {
-        console.log("Navigate to dashboard", res);
+        console.log("Navigate to dashboard");
         //Render the dashboard html 
         res.render("dashboard", res);
     });
 
     //View All Members in the site 
     app.get("/users", function (req, res) {
-        console.log("Display all members and their skills", res);
+        console.log("Display all members and their skills");
         //Render the dashboard html 
         res.render("users", res);
     });
@@ -58,7 +59,7 @@ module.exports = function (app) {
     //Signout 
     app.get("/logout", function (req, res) {
         if (req.user) {
-            console.log("Goodbye user ", res);
+            console.log("Goodbye user " );
             res.redirect("/");
         }
         else {
