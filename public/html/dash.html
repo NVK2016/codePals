@@ -14,64 +14,136 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light w" style="height:100px">
-        <a class="col-3 navbar-brand text-white text-center bg-info" id="headerLogo" href="./updatePro.html"
-            style="height:100px">
-            Update Profile</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <nav class="nav nav-pills d-flex justify-content-end flex-sm-row " style="background-color: white">
+        <a class="flex-sm-fill text-sm-center nav-link" href="./updatePro.html" style="color: green">New Activity</a>
+        <a class="flex-sm-fill text-sm-center nav-link active" href="./dash.html" style="color: green">My Dashboard</a>
 
-        </button>
-
-        <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./allusers.html"
-            style="height:100px">
-            View Members</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-        <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./activity.html"
-            style="height:100px">
-            Create New Activity</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
-        <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./index.html"
-            style="height:100px">
-            sign Out</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-
-        </button>
-
+        <a class="flex-sm-fill text-sm-center nav-link " href="./allmembers.html" style="color: green">View All Members</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="./updatePro.html"style="color: green">Update Profile</a>
+        <a class="flex-sm-fill text-sm-center nav-link" href="./index.html"style="color: green">Sign Out</a>
+        <a class="navbar-brand">
+                <img src="../assets/img/codepals_logo-02.png" width="60"  class="d-inline-block align-center" alt="">
+              
+              </a>
     </nav>
+    <ul class="nav nav-pills" class="nav justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link active" href="./dash.html">My Dashboard</a>
+            </li>          
+            <li class="nav-item">
+              <a class="nav-link" href="./newactivity.html">New Activity</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="./allmembers.html">View All Members</a>
+            </li>
+            <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">My Profile</a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="./updatePro.html">Update Profile</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="./index.html">Sign Out</a>
+                    </div>
+                  </li>
+          </ul>
 
     <div class="container">
-            <div class="card-body">
-                    
-                            <div class="card-header" style="color:rgb(19, 235, 152);">              
-        <div class="col-sm">
-            <img src='./assets/images/dashImage.jpg' class="imgPort">
-            <h3>My Activitie</h3>
-        </div>
-    </div>      
-    <div class="card-header" style="color:rgb(19, 235, 152);">              
-        <div class="col-sm">
-            <img src='./assets/images/dashImage.jpg' class="imgPort">
-            <h3>Available Activities</h3>
-        </div>
-    </div>
-    
-</div>
+        <div class="card-body">
 
- </div>
+            <div class="card-header" style="color: black;">
+                <div class="col-sm">
+                    <img src='./assets/images/dashImage.jpg' class="imgPort">
+                    <h3>My Activities</h3>
+                    <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Interested?</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr> 
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td> <button class="btn btn-success">Yes
+                                </button>
+                                    <button class="btn btn-danger">No</button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td> <button class="btn btn-success">Yes
+                                    </button>
+                                        <button class="btn btn-danger">No</button>
+                                    </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td> <button class="btn btn-success">Yes
+                                    </button>
+                                        <button class="btn btn-danger">No</button>
+                                    </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                </div>
+            </div>
+            <div class="card-header" style="color: black;">
+                <div class="col-sm">
+                    <img src='./assets/images/dashImage.jpg' class="imgPort">
+                    <h3>Available Activities</h3>
+                    <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Interested?</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr> 
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td> <button class="btn btn-success">Yes
+                                </button>
+                                    <button class="btn btn-danger">No</button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td> <button class="btn btn-success">Yes
+                                    </button>
+                                        <button class="btn btn-danger">No</button>
+                                    </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td> <button class="btn btn-success">Yes
+                                    </button>
+                                        <button class="btn btn-danger">No</button>
+                                    </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </body>
 
 </html>
