@@ -39,11 +39,16 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     },
+    photoLink: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+    },
     passw: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [5, 20]
+        len: [3]
       }
     }
   });

@@ -20,7 +20,15 @@ module.exports = function (app) {
 
   //Get data for the logged in user 
   app.get('/api/user', function (req, res) {
+    console.log(db.activities);
     db.users.findOne({
+        where: {id: 1},
+        include: [{model:db.activities, as: "activities"}, {model:db.skills, as: "skills"}]        
+    }).then(function(dbUser) {
+      res.json(dbUser);
+    });
+    //this part will be added later when we know how to identify a user
+    /*db.users.findOne({
       where: { userid: req.userId },
       include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
     }).then(function (dbData) {
@@ -28,7 +36,7 @@ module.exports = function (app) {
       console.log(dbData);
 
       res.json(dbData)
-    })
+    }) */
   });
 
   //Registering 
