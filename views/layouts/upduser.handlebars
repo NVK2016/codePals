@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+{{!-- Calling Client JS --}}
+{{!-- <script src="/assets/js/activity.js"></script> --}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+<link rel="stylesheet" href="../public/assets/css/style.css">
+<script src="../assets/js/user.js"></script>
+
+
+</head>
+
+<body>
+    
+<div id="main-body"></div>
+
+    <div class="cont2">
+
+        <div id="content">
+            <section id="sign-up">
+                <h1>Update {{users.firstName}}'s Profile </h1>
+                <div class="form-group">
+                    <input>First Name: {{users.firstName}}</input><br>
+                </div>
+                <div class="form-group">
+                    <input>Last Name:{{users.lastName}}</input><br>
+                </div>
+                <div class="form-group">
+                    <input>Password: {{users.passw}}</input><br>
+                </div>
+                <div class="form-group">
+                    <p>Email: {{users.email}}</p><br>
+                </div>
+                <div class="form-group">
+                    <input>Phone:{{users.phone}}</input><br>
+                </div>
+                <div class="form-group">
+                    <input>City: {{users.city}}</input><br>
+                </div>
+                <div class="form-group">
+                    <input>State: {{users.state}}</input>><br>
+                </div>
+                <div class="form-group">
+                    <input>Photo:{{users.photoLink}}</input><br>
+                </div>
+                <div class="form-group">
+                            <label>Skills:</label>
+                    {{#each}}
+                         <p> <strong>{{users.skills.id}}.{{users.skills.skill}} {{users.skills.skillType}}</strong></p>
+                    {{/each}}
+                </div>
+
+                <button type="submit">Update User</button>
+
+            </section>
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- "push" div for sticky footer -->
+    <div class="push"></div>
+
+    <footer>
+
+    </footer>
+</body>
+
+</html>
