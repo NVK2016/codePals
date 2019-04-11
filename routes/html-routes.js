@@ -1,4 +1,4 @@
-// *********************************************************************************
+// ********************************************************************************* 
 // html-routes.js - this file offers a set of routes for sending users to the various html pages
 // *********************************************************************************
 
@@ -33,17 +33,18 @@ module.exports = function (app) {
     //Sigin Up page 
     app.get("/signup", function (req, res) {
 
+
         console.log("HTML get singup url ");
         //Render the index handle bar 
         res.render("signup", res);
     });
 
-    //New Activity Form 
-    app.get("/addactivity", function (req, res) {
+  /*   //New Activity Form 
+    app.get("/addactivity", function (_req, res) {
         console.log("Creating a new Activity", res);
         //Render the dashboard html 
         res.render("createActivity", res);
-    });
+    }); */
 
     //Making it secure while transferrign data from client-side to server 
     // app.get("/dashboard", function (req, res) {
@@ -77,4 +78,9 @@ module.exports = function (app) {
         });
 
     });
+
+    // // If no matching route is found default to welcome page 
+    // app.get("*", function(req, res) {
+    //     res.redirect("/"); 
+    // });
 };

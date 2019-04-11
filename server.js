@@ -28,6 +28,8 @@ require('./config/passport')(passport);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use('/public/assets/img', express.static(__dirname + '/public/assets/img'));
+app.use('/public/assets/css', express.static(__dirname + '/public/assets/css'));
 
 /* 
 // Sets up the Express app to handle data parsing

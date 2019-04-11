@@ -55,14 +55,27 @@ module.exports = function (app) {
             console.log("auth",req.isAuthenticated())
             res.redirect("/")
         }
-        
-        
-        
     });
+
+    //the get request for adding a new activity page
+    app.get('/addactivity', function (req, res) {
+        db.users.findAll({ where: { active: 1 } }).then(function (dbUsers) {
+            console.log(dbUsers);
+            var hbsObject = {
+                users: dbUsers
+            };
+            console.log(hbsObject);
+            res.render("addactivity", hbsObject);
+        })
+    });
+
 
     //Add a new Project / Meetup  
     app.post('/addactivity', function (req, res) {
         //we have to receive in req.body an array of userids selected by an admin:
+
+        //try to retrieve the values from the req
+        
         //hardcoding values for now:
         var arrayIds = [3, 4];
         var leaderId = 1; // will have to grab it from req
