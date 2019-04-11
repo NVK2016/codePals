@@ -8,12 +8,15 @@ var path = require("path");
 
 var db = require("../models");
 
-console.log("HTML Route file"); 
+// var passport = require('passport');
+
+
+console.log("HTML Route file");
 
 // Routes
 // =============================================================
 module.exports = function (app) {
-    
+
     //Welcome page 
     app.get("/", function (req, res) {
         console.log("Welcome page ", res);
@@ -24,15 +27,16 @@ module.exports = function (app) {
     app.get("/login", function (req, res) {
         console.log("Welcome exisiting user logging into system", res);
         //Render the index handle bar 
-        res.render("login", res);
+        res.render("auth", res);
     });
 
-     //Sigin Up page 
-     app.get("/signup", function (req, res) {
+    //Sigin Up page 
+    app.get("/signup", function (req, res) {
 
-        console.log("HTML GET Sign UP url "); 
-        //Render the sign up page handle bar along 
-        res.render("signup");
+
+        console.log("HTML get singup url ");
+        //Render the index handle bar 
+        res.render("signup", res);
     });
 
   /*   //New Activity Form 
@@ -43,11 +47,11 @@ module.exports = function (app) {
     }); */
 
     //Making it secure while transferrign data from client-side to server 
-    app.get("/dashboard", function (req, res) {
-        console.log("Navigate to dashboard");
-        //Render the dashboard html 
-        res.render("dashboard", res);
-    });
+    // app.get("/dashboard", function (req, res) {
+    //     console.log("Navigate to dashboard");
+    //     //Render the dashboard html 
+    //     res.render("dashboard", res);
+    // });
 
     //View All Members in the site 
     app.get("/users", function (req, res) {
@@ -58,13 +62,21 @@ module.exports = function (app) {
 
     //Signout 
     app.get("/logout", function (req, res) {
-        if (req.user) {
-            console.log("Goodbye user " );
-            res.redirect("/");
-        }
-        else {
-            res.redirect("/login");
-        }
+        // if (req.user) {
+        //     console.log("Goodbye user " );
+        //     res.redirect("/");
+        // }
+        // else {
+        //     res.redirect("/login");
+        // }
+
+        res.clearCookie("user_sid");
+        req.session.destroy(function(err) {
+            req.logout();
+            res.clearCookie("user_sid");
+            res.status(200).redirect("/");
+        });
+
     });
 
     // // If no matching route is found default to welcome page 
@@ -72,7 +84,3 @@ module.exports = function (app) {
     //     res.redirect("/"); 
     // });
 };
-
-
-
-

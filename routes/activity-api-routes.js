@@ -17,20 +17,44 @@ module.exports = function (app) {
     //we already have the dashboard route inside /api/user - how we should organize it?
     //Get Activity Data for the logged in user 
     app.get('/dashboard', function (req, res) {
-        db.Activities.findAll({
-            where: { active: '0' },
-            include: [{
-                model: 'users',
-                as: 'User',
-                where: { userid: req.userId }
-            }]
-        }).then(function (dbData) {
+        
+        if(req.isAuthenticated()){
+            console.log(true)
+            console.log(req.session.passport.user);
+            var usId = req.session.passport.user.id;
 
-            console.log(dbData);
+            db.users.findOne({
+                where: { id: usId},
+                // where: { userid: req.userId },
+                include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
+              }).then(function (dbUser) {
+          
+                //Returns a JSON obj 
+                res.json(dbUser);
+          
+              });
 
-            res.json(dbData)
 
-        })
+
+        //     db.Activities.findAll({
+        //     where: { active: '0' },
+        //     include: [{
+        //         model: 'users',
+        //         as: 'User',
+        //         where: { userid: req.userId }
+        //     }]
+        // }).then(function (dbData) {
+
+        //     console.log(dbData);
+
+        //     res.json(dbData)
+        // })
+            
+            // res.render("dashboard")
+        }else {
+            console.log("auth",req.isAuthenticated())
+            res.redirect("/")
+        }
     });
 
     //the get request for adding a new activity page

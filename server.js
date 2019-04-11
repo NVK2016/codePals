@@ -8,14 +8,21 @@
 // Dependencies
 // =============================================================
 var express = require("express");
-var bodyParser = require("body-parser");
+// var bodyParser = require("body-parser");
 
 var db = require("./models");
+var passport = require('passport');
+var session = require('express-session');
+
 
 // Sets up the Express App
 // =============================================================
 var app = express();
 var PORT = process.env.PORT || 8080;
+
+//use local-stratey defined in config folder
+require('./config/passport')(passport);
+
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
@@ -39,6 +46,23 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+//Using session
+app.use(session({
+  key: 'user_sid',
+  secret: 'goN6DJJC6E287cC77kkdYuNuAyWnz7Q3iZj8',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+      expires: 600000,
+      httpOnly: false
+  }
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Routes
 // =============================================================
