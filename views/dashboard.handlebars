@@ -58,7 +58,7 @@
         <div class="card-header" style="color:rgb(19, 235, 152);">
             <div class="col-sm">
                 <img src='./assets/images/dashImage.jpg' class="imgPort">
-                <h3>My Activities</h3>
+                <h3>My Projects</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -75,11 +75,26 @@
                         {{each activity}}
                         <tr>
                             <th scope="row">1</th>
-                            <td>"Date"</td>
-                            <td>"Title"</td>
-                            <td>"Type"</td>
+                            <td>{{activity.estimateStartDate}}</td>
+                            <td>{{activity.title}} </td>
+                            <td>{{activity.actType}}</td>
 
-                            <td> <button class="btn btn-success">Yes
+                            <td>{{activity.Description}}</td>
+                            <td><button class="btn btn-success">Yes
+                                </button>
+                                <button class="btn btn-danger">No</button>
+                            </td>
+                        </tr>
+                        {{/each activity}}
+                        {{each activity}}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>{{activity.estimateStartDate}}</td>
+                            <td>{{activity.title}} </td>
+                            <td>{{activity.actType}}</td>
+
+                            <td>{{activity.Description}}</td>
+                            <td><button class="btn btn-success">Yes
                                 </button>
                                 <button class="btn btn-danger">No</button>
                             </td>
@@ -89,18 +104,17 @@
                 </table>
             </div>
         </div>
+
         <div class="card-header" style="color:rgb(25, 136, 94);">
             <div class="col-sm">
                 <img src='./assets/images/dashImage.jpg' class="imgPort">
-                <h3>Available Activities</h3>
-
+                <h3>Available Meetups</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Title</th>
                             <th scope="col">Type</th>
-
                             <th scope="col">Description</th>
                             <th scope="col">Interested?</th>
                         </tr>
@@ -110,11 +124,12 @@
                         {{each activity}}
                         <tr>
                             <th scope="row">1</th>
-                            <td>"Date"</td>
-                            <td>"Title"</td>
-                            <td>"Type"</td>
+                            <td>{{activity.estimateStartDate}}</td>
+                            <td>{{activity.title}} </td>
+                            <td>{{activity.actType}}</td>
 
-                            <td> <button class="btn btn-success">Yes
+                            <td>{{activity.Description}}</td>
+                            <td><button class="btn btn-success">Yes
                                 </button>
                                 <button class="btn btn-danger">No</button>
                             </td>
