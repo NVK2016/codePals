@@ -104,10 +104,9 @@
             </div>
             <div class="col-10 my-2">
                 <select id="selectCodePals" class="form-control chzn-select" multiple="true">
-                    {{#each users}}
+                 {{#each users}}
                     {{#if active}}
                     <option>{{id}}.{{firstName}} {{lastName}}</option>
-                  {{!--   selected --}}
                     {{/if}}
                     {{/each}}
                 </select>
