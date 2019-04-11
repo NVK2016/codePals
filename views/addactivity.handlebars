@@ -1,0 +1,90 @@
+{{!-- Calling Client JS --}}
+{{!-- <script src="/assets/js/activity.js"></script> --}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+</head>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">codePals</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">View Members</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Update Profile</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Sign Out</a>
+      </li>
+    </ul>
+  {{!--   <span class="navbar-text">
+      Navbar text with an inline element
+    </span> --}}
+  </div>
+</nav>
+
+<div class="container">
+    <h2>Add Project/Meetup</h2>
+    <form id="contact-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" type="text"><br>
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location (City):</label>
+            <input id="location" type="text" autocomplete="location"><br>
+        </div>
+
+        <div class="form-group">
+            <label for="tentStartDate">Tentative Start Date:</label>
+            <input type="text" id="tentStartDate"><br>
+        </div>
+
+        <div class="form-group">
+            <label for="actType">Will it be a Meetup/Project?</label>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="optradio" checked>Project
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                    <input type="radio" class="form-check-input" name="optradio">Meetup
+                </label>
+            </div>
+            </input>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Describe a little the project/meetup:</label>
+            <textarea class="form-control" rows="2" id="description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="selectCodePals">Invite CodePals:</label>
+            <select id="selectCodePals" class="form-control chzn-select" multiple="true">
+                {{#each users}}
+                {{#if active}}
+                <option selected>{{firstName}} {{lastName}}</option>
+                {{/if}}
+                {{/each}}
+            </select>
+        </div>
+        {{!--     <button class="btn-success" type="submit" id="btn_update"> Update</button> --}}
+        <button type="submit" class="btn btn-success">Add Activity</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".chzn-select").chosen();
+    });
+</script>
