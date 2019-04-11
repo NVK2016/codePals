@@ -1,0 +1,21 @@
+.btn-success { 
+    
+    background-color: #6B8E23;
+  }
+
+  .btn-danger { 
+    
+    background-color: #B22222;
+  }
+
+  .nav {
+    background-color: #6B8E23;
+    color: #FFFFFF;
+  }
+
+.btn-success.active
+  {
+      background-color: #9ACD32;
+      border-color: #9ACD32;
+  }
+
