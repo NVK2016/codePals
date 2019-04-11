@@ -21,6 +21,8 @@ var PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use('/public/assets/img', express.static(__dirname + '/public/assets/img'));
+
 /* 
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
