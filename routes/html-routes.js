@@ -35,12 +35,12 @@ module.exports = function (app) {
         res.render("signup");
     });
 
-    //New Activity Form 
-    app.get("/addactivity", function (req, res) {
+  /*   //New Activity Form 
+    app.get("/addactivity", function (_req, res) {
         console.log("Creating a new Activity", res);
         //Render the dashboard html 
         res.render("createActivity", res);
-    });
+    }); */
 
     //Making it secure while transferrign data from client-side to server 
     app.get("/dashboard", function (req, res) {

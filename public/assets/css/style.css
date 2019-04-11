@@ -35,11 +35,16 @@ input{
       scale(.25,.25)
   } */
 
-.active {
-  color: white;
-}
+  .active { 
+      color: white;
+  }
 
-
+/* to add asterisk before the required text field */
+.required:before {
+    content:"*";
+    font-weight:bold;
+    color: #E23B0F;
+  } 
 
 .cont2 {
   width: 960px;

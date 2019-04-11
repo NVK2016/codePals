@@ -1,0 +1,125 @@
+{{!-- Calling Client JS --}}
+{{!-- <script src="/assets/js/activity.js"></script> --}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+<link rel="stylesheet" href="../public/assets/css/style.css">
+<script src="../assets/js/activity.js"></script>
+
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    {{!--     <a class="navbar-brand" href="#">
+        <img src="../public/assets/img/codepals_logo-02_m.png">
+    </a> --}}
+    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">View Members</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Update Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container my-3 p-3" style="background: #f6f6f6; border:  1px solid #a9a9a9; border-radius: 5px;">
+    <div class="row my-2">
+        <div class="col-4">
+            <h2 class="mb-3 py-3" style="color: #E23B0F">Add Project/Meetup</h2>
+        </div>
+        <div class="col-8">
+            <img src="../public/assets/img/codepals_logo-02.png" width="120px"  class="rounded float-right">
+        </div>
+    </div>
+
+   {{!--  <h2 class="mb-3 py-3" style="color: #E23B0F">Add Project/Meetup</h2> --}}
+    <form id="activity-form">
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="title" class="required">Project Title:</label>
+            </div>
+            <div class="col-5">
+                <input id="title" type="text" >
+            </div>
+
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="location">Location (City):</label>
+            </div>
+            <div class="col-10">
+                <input id="location" type="text" autocomplete="location">
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="tentStartDate">Tentative Start Date:</label>
+            </div>
+            <div class="col-10">
+                <input type="text" id="tentStartDate">
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="actType">Activity Type:</label>
+            </div>
+            <div class="col-10">
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio" id="projRadio" checked>Project
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="optradio" id="meetupRadio">Meetup
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="description">Short Description:</label>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" rows="2" id="description"></textarea>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="selectCodePals">Invite codePals:</label>
+            </div>
+            <div class="col-10 my-2">
+                <select id="selectCodePals" class="form-control chzn-select" multiple="true">
+                 {{#each users}}
+                    {{#if active}}
+                    <option>{{id}}.{{firstName}} {{lastName}}</option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+        {{!--     <button class="btn-success" type="submit" id="btn_update"> Update</button> --}}
+        <button type="submit" id="addActButton" class="btn btn-success my-2" style="background: #0ba14b">Add Activity</button>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".chzn-select").chosen();
+    });
+</script>
