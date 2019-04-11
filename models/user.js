@@ -1,3 +1,7 @@
+var bcrypt = require("bcryptjs")
+
+
+
 //creating User model for users table
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define("users", {
@@ -52,6 +56,16 @@ module.exports = function (sequelize, DataTypes) {
       }
     }
   });
+
+  //method for the User Model
+  User.generateHash = function (password) {
+    return bcrypt.hashSync(password, 8)
+  };
+
+  User.prototype.compareHash = function (password) {
+    return bcrypt.compareSync(password, this.passw)
+  };
+
 
   User.associate = function (models) {
     User.belongsToMany(models.activities, {

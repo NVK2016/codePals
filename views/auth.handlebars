@@ -10,19 +10,19 @@
         {{message}}
       </div>
       {{/if}}
-      <form action="/users/login" method="POST">
+      <form action="/login" method="POST">
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" />
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" />
+          <label for="passw">Password</label>
+          <input type="passw" id="passw" name="passw" class="form-control" placeholder="Enter Password" />
         </div>
         <button type="submit" class="btn btn-primary btn-block">Login</button>
       </form>
       <p class="lead mt-4">
-        No Account? <a href="/users/register">Register</a>
+        No Account? <a href="/register">Register</a>
       </p>
     </div>
   </div>

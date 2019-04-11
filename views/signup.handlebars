@@ -15,7 +15,7 @@
 			{{/if}}
 
 
-			<form action="/users/register" method="POST">
+			<form action="/signup" method="POST">
 
 				<div class="form-group">
 					<label for="first name">First Name</label>
@@ -35,8 +35,8 @@
 				</div>
 
 				<div class="form-group">
-					<label for="password">Password</label>
-					<input type="password" id="password" name="password" class="form-control"
+					<label for="passw">Password</label>
+					<input type="password" id="passw" name="passw" class="form-control"
 						placeholder="Create Password" />
 				</div>
 
@@ -47,12 +47,12 @@
 
 				<div class="form-group">
 					<label for="city">City:</label>
-					<input id="city" type="text" autocomplete="city" required><br>
+					<input id="city" type="text" name="city" autocomplete="city" required><br>
 				</div>
 
 				<div class="form-group">
-					<label for="city">State:</label>
-					<input id="state" type="text" autocomplete="city" required><br>
+					<label for="state">State:</label>
+					<input id="state" type="text" name="state" autocomplete="state" required><br>
 				</div>
 
 				<div class="form-group">
@@ -73,7 +73,7 @@
 				<button class="btn-success" type="submit" id="btn_signup"> Sign Up</button>
 			</form>
 
-			<p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
+			<p class="lead mt-4">Have An Account? <a href="/login">Login</a></p>
 		</div>
 	</div>
 </div>

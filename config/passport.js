@@ -3,6 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 // Load db 
 var db = require('../models');
 
+
 module.exports = function (passport) {
   passport.serializeUser(function (user, done) {
     done(null, user);
@@ -32,23 +33,26 @@ module.exports = function (passport) {
   //signup
   passport.use("local-signup", new LocalStrategy({
     // by default, local strategy uses username and local_pw, we will override with email
-    usernameField: 'email',
+    usernameField: "email",
+    passwordField: "passw",
     passReqToCallback: true // allows us to pass back the entire request to the callback
   },
 
-    function (req, email, password, done) {
+    function (req, email, passw, done) {
       //for debugging
-      // console.log(req.body)
-      // console.log(email)
-      // console.log(password)
+      console.log(req.body)
+      console.log(email)
+      console.log(passw)
 
       
       process.nextTick(function () {
-        db.User.findOne({
+        db.users.findOne({
           where: {
             email: email
           }
         }).then(function (user, err) {
+          console.log("Hi User", user)
+          
           //if email is already registered
           if (user) {
             console.log("user &&&&&&&&&&&&&&&&&&&", user)
@@ -59,14 +63,14 @@ module.exports = function (passport) {
           } else {
             //creating a new account in our database
             console.log("user ######", user)
-            db.User.create({
+            db.users.create({
               firstName: req.body.firstName,
               lastName: req.body.lastName,
               email: email,
               phone: req.body.phone,
               city: req.body.city,
               state: req.body.state,
-              password: db.User.generateHash(password)
+              passw: db.users.generateHash(passw)
             }).then(function (newUser) {
               console.log("new user", newUser)
               return done(null, newUser)
@@ -85,11 +89,12 @@ module.exports = function (passport) {
     new LocalStrategy(
       {
         usernameField: 'email',
+        passwordField: "passw",
         passReqToCallback: true
         // allows us to pass back the entire request to the callback
-      }, function (req, email, password, done) {
+      }, function (req, email, passw, done) {
         // Match user
-        db.User.findOne({where:{
+        db.users.findOne({where:{
           email: email,
 
         }}).then(function (user, err) {
@@ -108,7 +113,7 @@ module.exports = function (passport) {
             }); // req.flash is the way to set flashdata using connect-flash
           }
           // if the user is found but the password is wrong
-          if (user && !user.compareHash(req.body.password)) {
+          if (user && !user.compareHash(req.body.passw)) {
             console.log('%%^^^^%$%$%%wrong password', user, err)
             return done(null, false, { 
               from: 'login',

@@ -19,11 +19,14 @@
   },
   "homepage": "https://github.com/NVK2016/ProjectTwo#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
+    "express-session": "^1.16.1",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^5.2.13"
   }
 }
