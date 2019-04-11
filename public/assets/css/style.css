@@ -26,3 +26,10 @@
   .active { 
       color: white;
   }
+
+/* to add asterisk before the required text field */
+.required:before {
+    content:"*";
+    font-weight:bold;
+    color: #E23B0F;
+  } 

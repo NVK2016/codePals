@@ -49,6 +49,9 @@ module.exports = function (app) {
     //Add a new Project / Meetup  
     app.post('/addactivity', function (req, res) {
         //we have to receive in req.body an array of userids selected by an admin:
+
+        //try to retrieve the values from the req
+        
         //hardcoding values for now:
         var arrayIds = [3, 4];
         var leaderId = 1; // will have to grab it from req

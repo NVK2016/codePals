@@ -4,6 +4,10 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+<link rel="stylesheet" href="../public/assets/css/style.css">
+<script src="../assets/js/activity.js"></script>
+
+
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -37,13 +41,13 @@
     </div>
 
    {{!--  <h2 class="mb-3 py-3" style="color: #E23B0F">Add Project/Meetup</h2> --}}
-    <form id="contact-form">
+    <form id="activity-form">
         <div class="row my-2">
             <div class="col-2">
-                <label for="title">Project Title:</label>
+                <label for="title" class="required">Project Title:</label>
             </div>
             <div class="col-5">
-                <input id="title" type="text">
+                <input id="title" type="text" >
             </div>
 
         </div>
@@ -73,12 +77,12 @@
             <div class="col-10">
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio" checked>Project
+                        <input type="radio" class="form-check-input" name="optradio" id="projRadio" checked>Project
                     </label>
                 </div>
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio">Meetup
+                        <input type="radio" class="form-check-input" name="optradio" id="meetupRadio">Meetup
                     </label>
                 </div>
             </div>
@@ -94,17 +98,16 @@
             </div>
         </div>
 
-
-
         <div class="row my-2">
             <div class="col-2">
-                <label for="selectCodePals">Invite CodePals:</label>
+                <label for="selectCodePals">Invite codePals:</label>
             </div>
             <div class="col-10 my-2">
                 <select id="selectCodePals" class="form-control chzn-select" multiple="true">
                     {{#each users}}
                     {{#if active}}
-                    <option selected>{{firstName}} {{lastName}}</option>
+                    <option>{{id}}.{{firstName}} {{lastName}}</option>
+                  {{!--   selected --}}
                     {{/if}}
                     {{/each}}
                 </select>
@@ -112,7 +115,7 @@
         </div>
 
         {{!--     <button class="btn-success" type="submit" id="btn_update"> Update</button> --}}
-        <button type="submit" class="btn btn-success my-2" style="background: #0ba14b">Add Activity</button>
+        <button type="submit" id="addActButton" class="btn btn-success my-2" style="background: #0ba14b">Add Activity</button>
     </form>
 </div>
 

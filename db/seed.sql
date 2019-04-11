@@ -7,6 +7,9 @@ VALUES ("Joe", "Doe", "jdoe@gmail.com", "", "San Francisco", "CA", true, "123456
 INSERT INTO codepals_db.users (firstname, lastName, email, phone, city, state, active, passw, createdAt, updatedAt)
 VALUES ("Jane", "Smith", "jsm@gmail.com", "", "San Francisco", "CA", true, "abcdfhr", '2019-04-09 13:17:17'  ,'2019-04-09 13:17:17');
 
+INSERT INTO codepals_db.users (firstname, lastName, email, phone, city, state, active, passw, createdAt, updatedAt)
+VALUES ("Emily", "Jones", "ej@gmail.com", "", "San Francisco", "CA", true, "abcddfg", '2019-04-10 13:17:17'  ,'2019-04-10 13:17:17');
+
 INSERT INTO skills(skilltype, skill, createdAt, updatedAt)
 values ("Front End" , "HTML" , '2011-12-18 13:17:17'  ,'2011-12-18 13:17:17'),
 ("Back End" , "Javascript"  ,'2011-12-18 13:17:17'  ,'2011-12-18 13:17:17');
