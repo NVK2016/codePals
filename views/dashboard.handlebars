@@ -1,39 +1,130 @@
-<h1>Activity Page</h1>
-{{!-- Calling Client JS --}}
-<script src="/assets/js/activity.js"></script>
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link active" href="#">Active</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+</ul>
 
-<button type="button" id="btn_updUser" class="btn btn-success">Edit profile</button> 
-<hr /> 
-<h2>Update My Acitivity</h2>
+<nav class="navbar navbar-expand-lg navbar-light bg-light w" style="height:100px">
+    <a class="col-3 navbar-brand text-white text-center bg-info" id="headerLogo" href="./updatePro.html"
+        style="height:100px">
+        Update Profile</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
 
-			<div class="form-group">
-				<label for="name"> Name:</label>
-				<input id="fname" type="text" autocomplete="fname" disabled required><br>
-			</div>
-			<p> Cannot change </p>
-            <hr /> 
-			<div class="form-group">
-				<label for="location">Whats your new Meetup/Project Location:</label>
-				<input id="location" type="text" autocomplete="location" required><br>
-			</div>
-			<div class="form-group">
-				<label for="tentStartDate">Tentative Start Date:</label>
-				<input type="text" id="tentStartDate" required><br>
-			</div>
-			
-			<div class="form-group">
-				<label for="actType">Will it be a Meetup/Project ?</label>
-				<input type="text" id="actType" name="actType"  required><br>
-			</div>
-			<div class="form-group">
-				<label for="description">Describe a little what about thte project/meetup will do:</label>
-				<input id="description" type="text" autocomplete="description" required><br>
-				</div>
-				<div class="form-group">
-					<label for="city">State:</label>
-					<input id="state" type="text" autocomplete="city" required><br>
-				</div>
-				
-				<button class="btn-success" type="submit" id="btn_update"> Update</button>
+    </button>
 
+    <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./allusers.html"
+        style="height:100px">
+        View Members</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
 
+    </button>
+
+    <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./activity.html"
+        style="height:100px">
+        Create New Activity</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+    <a class="col-3 navbar-brand text-white text-lg-center bg-info" id="headerLogo" href="./index.html"
+        style="height:100px">
+        sign Out</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+</nav>
+
+<div class="container">
+    <div class="card-body">
+
+        <div class="card-header" style="color:rgb(19, 235, 152);">
+            <div class="col-sm">
+                <img src='./assets/images/dashImage.jpg' class="imgPort">
+                <h3>My Activities</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Type</th>
+
+                            <th scope="col">Description</th>
+                            <th scope="col">Interested?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each activity}}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>"Date"</td>
+                            <td>"Title"</td>
+                            <td>"Type"</td>
+
+                            <td> <button class="btn btn-success">Yes
+                                </button>
+                                <button class="btn btn-danger">No</button>
+                            </td>
+                        </tr>
+                        {{/each activity}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-header" style="color:rgb(25, 136, 94);">
+            <div class="col-sm">
+                <img src='./assets/images/dashImage.jpg' class="imgPort">
+                <h3>Available Activities</h3>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Type</th>
+
+                            <th scope="col">Description</th>
+                            <th scope="col">Interested?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{each activity}}
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>"Date"</td>
+                            <td>"Title"</td>
+                            <td>"Type"</td>
+
+                            <td> <button class="btn btn-success">Yes
+                                </button>
+                                <button class="btn btn-danger">No</button>
+                            </td>
+                        </tr>
+                        {{/each activity}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
