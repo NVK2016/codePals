@@ -16,6 +16,32 @@ console.log("User Route file");
 //file has been exported as a function you can acess it by require('file-name.js')
 module.exports = function (app) {
 
+  // Dashboard Route
+    app.get("/dashboard", function (req, res) {
+        console.log("Navigate to dashboard");
+        //Render the dashboard html 
+        if (req.isAuthenticated()) {
+          console.log(true)
+          console.log(req.session.passport.user);
+          var usId = req.session.passport.user.id;
+
+          db.users.findOne({
+              where: { id: usId },
+              // where: { userid: req.userId },
+              include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
+          }).then(function (dbUser) {
+
+              //Returns a JSON obj and redirects to dashboard 
+              res.render("dashboard", dbUser);
+
+          });
+      } else {
+          console.log("auth", req.isAuthenticated())
+          res.redirect("/")
+      }
+    });
+
+
   //View All codePals in the database 
   app.get("/allpals", function (req, res) {
 
@@ -29,14 +55,14 @@ module.exports = function (app) {
       db.users.findAll({
         //Dont include logged in user 
         where: {
-          [Op.not] : {id: userId} ,  active: 0}
+            active: 1} //[Op.not] : {id: userId} ,
       }).then(function (dbUsers) {
         var hbsObject = {
           users: dbUsers
         };
         console.log("All users", dbUsers);
         //res.json(dbUser);
-        res.render("allpals", dbUsers);
+        res.render("allpals", hbsObject);
       });
     } else {
       //Failed Auth then login again 
@@ -46,7 +72,7 @@ module.exports = function (app) {
 
   });
 
-  //View All codePals in the database 
+  //View Skills
   app.get("/userSkills", function (req, res) {
     db.skills.findAll({}).then(function (dbSkills) {
      
@@ -57,16 +83,16 @@ module.exports = function (app) {
   });
 
 
-  //Get data for the logged in user 
-  app.get('/api/user', function (req, res) {
-    console.log(db.activities);
-    db.users.findOne({
-      where: { id: req.params.id },
-      include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
-    }).then(function (dbUser) {
-      res.json(dbUser);
-    });
-  });
+  // //Get data for the logged in user 
+  // app.get('/api/user', function (req, res) {
+  //   console.log(db.activities);
+  //   db.users.findOne({
+  //     where: { id: req.params.id },
+  //     include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
+  //   }).then(function (dbUser) {
+  //     res.json(dbUser);
+  //   });
+  // });
 
   // FUNCTIONS
   // =============================================================
@@ -188,11 +214,11 @@ module.exports = function (app) {
   //Update My Profile - Updates the Logged in User Profile 
   app.put('/upduser', function (req, res) {
 
-    //Prints out all the field value grab from the client side script 
-    console.log("User Details: ", req.body);
-
     //Passport Authentication is sucessfull then proceed further 
     if (req.isAuthenticated()) {
+      //Prints out all the field value grab from the client side script 
+      console.log("User Details: ", req.body);
+
       console.log(true)
       console.log(req.session.passport.user);
       //Grabs the logged in user ID 
@@ -202,7 +228,7 @@ module.exports = function (app) {
 
       db.users.update({
         where: {
-          UserId: userId
+          id: userId
         }
       }).then(function (dbUser) {
 
@@ -211,7 +237,7 @@ module.exports = function (app) {
         //Update Skills 
 
         res.json(dbUser)
-        res.redirect("/dashboard");
+        res.redirect("/upduser");
       });
     } else {
       //Failed Auth then login again 
