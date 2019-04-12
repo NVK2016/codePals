@@ -24,42 +24,54 @@ module.exports = function (app) {
             // console.log(req.session.passport.user);
             var usId = req.session.passport.user.id;
 
-            db.users.findOne({
-                where: { id: usId },
-                // where: { userid: req.userId },
-                include: [{ model: db.activities, as: "activities" }]
-            }).then(function (dbUser) {
+            db.activities.findAll({
+                where: { 
+                    active: 1,
+                    actType: "meetup"
+                 }
+            }).then(function (allActivity) {
+                // console.log("All Activities: ", allActivity)
 
-                // //Returns a JSON obj 
-                // res.json(dbUser);
-
-                var user = dbUser.dataValues
-                
-                var activities = [];
-                for(var i = 0; i < user.activities.length; i ++){
-                    activities.push(user.activities[i].dataValues)
-                    activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
-
-                }
-
-                var userInfo = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    phone: user.phone,
-                    city: user.city,
-                    state: user.state,
-                    active: user.active,
-                    photoLink: user.photoLink,
-                    activities: activities,
-                    skills: user.skills
+                var allActArr = [];
+                for (var i = 0; i < allActivity.length; i++) {
+                    allActArr.push(allActivity[i].dataValues)
                 };
 
-                console.log(activities[0])
-                res.render("dashboard", userInfo)
+                db.users.findOne({
+                    where: { id: usId },
+                    // where: { userid: req.userId },
+                    include: [{ model: db.activities, as: "activities" }]
+                }).then(function (dbUser) {
 
+                    // //Returns a JSON obj 
+                    // res.json(dbUser);
+
+                    var user = dbUser.dataValues
+
+                    var activities = [];
+                    for (var i = 0; i < user.activities.length; i++) {
+                        activities.push(user.activities[i].dataValues);
+                        activities[i].isMine = (user.activities[i].dataValues.adminId === user.id);
+                    };
+
+                    var userInfo = {
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phone: user.phone,
+                        city: user.city,
+                        state: user.state,
+                        active: user.active,
+                        photoLink: user.photoLink,
+                        myActivities: activities,
+                        allActivities: allActArr
+                    };
+
+                    // console.log(activities[0])
+                    res.render("dashboard", userInfo)
+
+                });
             });
-
         } else {
             console.log("auth", req.isAuthenticated())
             res.redirect("/")
@@ -95,21 +107,21 @@ module.exports = function (app) {
 
     //the get request for adding a new activity page
     app.get('/updactivity', function (req, res) {
-       /*  if (req.isAuthenticated()) { */
-            console.log("The user is authenticated");
-            //console.log(req.session.passport.user);
-            //var usId = req.session.passport.user.id;
-            //pass each activity via an id
-            db.activities.findAll({
-                where: { id: 15 },
-                include: [{ model: db.users, as: "users" }]
-            }).then(function (dbActivity) {
-                res.json(dbActivity);
-                //populate the handlebars object with the current users for the current activity
-                var hbsCurrentUsers = {
-                    activityUsers: dbActivity
-                };
-            })
+        /*  if (req.isAuthenticated()) { */
+        console.log("The user is authenticated");
+        //console.log(req.session.passport.user);
+        //var usId = req.session.passport.user.id;
+        //pass each activity via an id
+        db.activities.findAll({
+            where: { id: 15 },
+            include: [{ model: db.users, as: "users" }]
+        }).then(function (dbActivity) {
+            res.json(dbActivity);
+            //populate the handlebars object with the current users for the current activity
+            var hbsCurrentUsers = {
+                activityUsers: dbActivity
+            };
+        })
             .then(function (dbActivity) {
                 res.json(dbActivity);
                 //populate the handlebars object with the current users for the current activity
@@ -118,15 +130,15 @@ module.exports = function (app) {
                 };
             });
 
-            /*    db.users.findAll({ where: { active: 1 } }).then(function (dbUsers) {
-                   console.log(dbUsers);
-                   var hbsObject = {
-                       users: dbUsers
-                   };
-                   console.log(hbsObject);
-                   res.render("addactivity", hbsObject);
-               })
-            */
+        /*    db.users.findAll({ where: { active: 1 } }).then(function (dbUsers) {
+               console.log(dbUsers);
+               var hbsObject = {
+                   users: dbUsers
+               };
+               console.log(hbsObject);
+               res.render("addactivity", hbsObject);
+           })
+        */
         /* }
         else {
             //if the user is not authenticated, redirect him to the home page
@@ -193,7 +205,7 @@ module.exports = function (app) {
                     res.json(dbUsersActivities);
                     //will have to redirect to a dashboard for the user
                 })
-                
+
 
             })
         }
