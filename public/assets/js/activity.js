@@ -3,19 +3,19 @@
 $(document).ready(function () {
     console.log("Inside Client Side Activity JS file");
 
-    //read the adio buttons to set up activity type property
-    var actTypeInput;
-    if ($("#projRadio").is(":checked")) {
-        actTypeInput = "project";
-    }
-    else if ($("#meetupRadio").is(":checked")) {
-        actTypeInput = "meetup";
-    }
-
     //add an event listener for the Add Activity button on the addactivity page
     $("#addActButton").on("click", function () {
         event.preventDefault();
         console.log("inside on button click event");
+
+        //read the radio buttons to set up activity type property
+        var actTypeInput;
+        if ($("#projRadio").is(':checked')) {
+            actTypeInput = "project";
+        }
+        else if ($("#meetupRadio").is(':checked')) {
+            actTypeInput = "meetup";
+        }
 
         // Read the values from the corresponding form's controls 
         var titleInput = $("#title").val().trim();
@@ -29,7 +29,7 @@ $(document).ready(function () {
         console.log(locationInput);
         console.log(startDateInput);
         console.log(descriptionInput);
-        console.log(actTypeInput);
+        console.log("act type " + actTypeInput);
 
         var particIds = [];
         for (var i = 0; i < palsInput.length; i++) {
@@ -71,7 +71,7 @@ $(document).ready(function () {
                 //Need to change it to dashboard 
                 //window.location.href = "/login";
                 console.log("The new activity was added successfully!")
-                window.location.href = "./dashboard";
+                //window.location.href = "./dashboard";   *****UNCOMMENT later********
             })
             .fail(function () {
                 console.log("There was an error when adding a new activity");
