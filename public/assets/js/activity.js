@@ -70,8 +70,8 @@ $(document).ready(function () {
             .done(function (result) {
                 //Need to change it to dashboard 
                 //window.location.href = "/login";
-                alert("success " + result);
-
+                console.log("The new activity was added successfully!")
+                window.location.href = "./dashboard";
             })
             .fail(function () {
                 console.log("There was an error when adding a new activity");

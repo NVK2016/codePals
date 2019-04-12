@@ -191,8 +191,8 @@ module.exports = function (app) {
             })
         }
         else {
-            console.log("auth", req.isAuthenticated())
-            res.redirect("/");
+            console.log("auth", req.isAuthenticated());
+            
         }
 
 
