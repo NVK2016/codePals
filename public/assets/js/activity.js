@@ -68,10 +68,8 @@ $(document).ready(function () {
             dataType: "json",
         })
             .done(function (result) {
-                //Need to change it to dashboard 
-                //window.location.href = "/login";
                 console.log("The new activity was added successfully!")
-                //window.location.href = "./dashboard";   *****UNCOMMENT later********
+                window.location.href = "./dashboard"; 
             })
             .fail(function () {
                 console.log("There was an error when adding a new activity");
