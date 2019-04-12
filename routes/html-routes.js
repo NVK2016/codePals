@@ -17,16 +17,10 @@ console.log("HTML Route file");
 // =============================================================
 module.exports = function (app) {
 
-    //Splash page 
-    app.get("/", function (req, res) {
-        console.log("Splash page ", res);
-        res.render("index");
-    });
-
     //Welcome page 
-    app.get("/welcome", function (req, res) {
+    app.get("/", function (req, res) {
         console.log("Welcome page ", res);
-        res.render("login");
+        res.render("index");
     });
 
     //Login page 
@@ -45,37 +39,10 @@ module.exports = function (app) {
         res.render("signup", res);
     });
 
-  /*   //New Activity Form 
-    app.get("/addactivity", function (_req, res) {
-        console.log("Creating a new Activity", res);
-        //Render the dashboard html 
-        res.render("createActivity", res);
-    }); */
-
-    //Making it secure while transferrign data from client-side to server 
-    // app.get("/dashboard", function (req, res) {
-    //     console.log("Navigate to dashboard");
-    //     //Render the dashboard html 
-    //     res.render("dashboard", res);
-    // });
-
-    // //View All Members in the site 
-    // app.get("/allpals", function (req, res) {
-    //     console.log("Display all members and their skills");
-    //     //Render the dashboard html 
-    //     res.render("users", res);
-    // });
-
-    //Signout 
+  
+    //Signout Page
     app.get("/logout", function (req, res) {
-        // if (req.user) {
-        //     console.log("Goodbye user " );
-        //     res.redirect("/");
-        // }
-        // else {
-        //     res.redirect("/login");
-        // }
-
+       
         res.clearCookie("user_sid");
         req.session.destroy(function(err) {
             req.logout();

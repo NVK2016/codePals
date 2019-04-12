@@ -7,7 +7,7 @@ $(document).ready(function ()
       //Update Profile when the submits data expect for the email address 
       $("#btn-update").on("click", function(){
         
-        alert("updating profile", $("#firstName").val(), $("#email").val().trim()); 
+        alert("updating profile"); 
 
         // Constructing a updateProfile object to hand to the database
         var updateUser = {
@@ -23,7 +23,7 @@ $(document).ready(function ()
             // userId: id
         };
 
-        alert("Data", updateUser); 
+        alert("Data", JSON.stringify(updateUser)); 
         //Pass the api route path for performing the database changes 
         $.ajax({
             method: "PUT",
@@ -32,7 +32,7 @@ $(document).ready(function ()
             })
             .done(function() {
                 //Need to change it to dashboard 
-                window.location.href = "/dashboard";
+                console.log("Test Message"); 
             });
       })
 });
