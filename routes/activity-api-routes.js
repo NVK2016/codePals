@@ -20,84 +20,52 @@ module.exports = function (app) {
     app.get('/dashboard', function (req, res) {
 
         if (req.isAuthenticated()) {
-            console.log(true)
-            console.log(req.session.passport.user);
+            // console.log(true)
+            // console.log(req.session.passport.user);
             var usId = req.session.passport.user.id;
 
             db.users.findOne({
                 where: { id: usId },
                 // where: { userid: req.userId },
-                include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
+                include: [{ model: db.activities, as: "activities" }]
             }).then(function (dbUser) {
 
-                //Returns a JSON obj 
-                res.json(dbUser);
+                // //Returns a JSON obj 
+                // res.json(dbUser);
+
+                var user = dbUser.dataValues
+                
+                var activities = [];
+                for(var i = 0; i < user.activities.length; i ++){
+                    activities.push(user.activities[i].dataValues)
+                    activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
+
+                }
+
+                var userInfo = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    phone: user.phone,
+                    city: user.city,
+                    state: user.state,
+                    active: user.active,
+                    photoLink: user.photoLink,
+                    activities: activities,
+                    skills: user.skills
+                };
+
+                console.log(activities[0])
+                res.render("dashboard", userInfo)
 
             });
 
-
-
-            //     db.Activities.findAll({
-            //     where: { active: '0' },
-            //     include: [{
-            //         model: 'users',
-            //         as: 'User',
-            //         where: { userid: req.userId }
-            //     }]
-            // }).then(function (dbData) {
-
-            //     console.log(dbData);
-
-            //     res.json(dbData)
-            // })
-
-            // res.render("dashboard")
         } else {
             console.log("auth", req.isAuthenticated())
             res.redirect("/")
-        }
+        };
     });
 
-    //authentication function for both login and signup
-    function passportAuthenticate(localStrategy, req, res, next) {
-        // console.log(localStrategy, req.body, next)
-        passport.authenticate(localStrategy, function (err, user, info) {
-            if (err) {
-                console.log("passport login/signup err", err)
-                return next(err);
-            }
-            if (!user) {
-                console.log("************", err, user, info)
-                if (info.from === "signup") {
-                    return res.render('signup', info)
-                }
-                else if (info.from === "login") {
-                    return res.render("auth", info)
-                }
-            } else {
-                console.log("passed ++++++++++++++++")
-                req.login(user, function (err) {
-                    if (err) {
-                        console.log(err)
-                        return next(err);
-                    } else {
-                        console.log("\n##########################");
-                        console.log(req.isAuthenticated());
-                        console.log('sucess');
-                        console.log(req.session.passport.user.dataValues.id);
-                        console.log("##########################");
-                        console.log("\n")
-                        return res.redirect("/dashboard");
-                    }
-
-
-                    //   return res.redirect('/users/' + user.username);
-                    // 
-                });
-            }
-
-        })(req, res, next);
-    };
 
 
     //the get request for adding a new activity page
@@ -225,11 +193,7 @@ module.exports = function (app) {
                     res.json(dbUsersActivities);
                     //will have to redirect to a dashboard for the user
                 })
-                    .catch(function (err) {
-                        console.log(err);
-                        res.json(error);
-                    });
-
+                
 
             })
         }
