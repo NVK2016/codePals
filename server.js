@@ -8,7 +8,7 @@
 // Dependencies
 // =============================================================
 var express = require("express");
-// var bodyParser = require("body-parser");
+var bodyParser = require("body-parser");
 
 var db = require("./models");
 var passport = require('passport');
@@ -31,12 +31,12 @@ app.use(express.json());
 app.use('/public/assets/img', express.static(__dirname + '/public/assets/img'));
 app.use('/public/assets/css', express.static(__dirname + '/public/assets/css'));
 
-/* 
+
 // Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
-app.use(bodyParser.json({ type: "application/vnd.api+json" })); */
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // Static directory
 app.use(express.static("public"));
@@ -58,10 +58,10 @@ app.use(session({
       httpOnly: false
   }
 }));
-
+ 
 // Passport middleware
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session()); 
 
 
 // Routes

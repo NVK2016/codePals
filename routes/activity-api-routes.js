@@ -17,42 +17,42 @@ module.exports = function (app) {
     //we already have the dashboard route inside /api/user - how we should organize it?
     //Get Activity Data for the logged in user 
     app.get('/dashboard', function (req, res) {
-        
-        if(req.isAuthenticated()){
+
+        if (req.isAuthenticated()) {
             console.log(true)
             console.log(req.session.passport.user);
             var usId = req.session.passport.user.id;
 
             db.users.findOne({
-                where: { id: usId},
+                where: { id: usId },
                 // where: { userid: req.userId },
                 include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
-              }).then(function (dbUser) {
-          
+            }).then(function (dbUser) {
+
                 //Returns a JSON obj 
                 res.json(dbUser);
-          
-              });
+
+            });
 
 
 
-        //     db.Activities.findAll({
-        //     where: { active: '0' },
-        //     include: [{
-        //         model: 'users',
-        //         as: 'User',
-        //         where: { userid: req.userId }
-        //     }]
-        // }).then(function (dbData) {
+            //     db.Activities.findAll({
+            //     where: { active: '0' },
+            //     include: [{
+            //         model: 'users',
+            //         as: 'User',
+            //         where: { userid: req.userId }
+            //     }]
+            // }).then(function (dbData) {
 
-        //     console.log(dbData);
+            //     console.log(dbData);
 
-        //     res.json(dbData)
-        // })
-            
+            //     res.json(dbData)
+            // })
+
             // res.render("dashboard")
-        }else {
-            console.log("auth",req.isAuthenticated())
+        } else {
+            console.log("auth", req.isAuthenticated())
             res.redirect("/")
         }
     });
@@ -74,32 +74,34 @@ module.exports = function (app) {
     app.post('/addactivity', function (req, res) {
         //we have to receive in req.body an array of userids selected by an admin:
 
-        //try to retrieve the values from the req
-        
-        //hardcoding values for now:
-        var arrayIds = [3, 4];
+        console.log(req.body.activity);
+        var obj = JSON.parse(req.body.activity); //getting an object from json 
+        console.log(obj);
+        //var leaderId = passedActivity.adminId;   //will use if passport works!!!!!!
         var leaderId = 1; // will have to grab it from req
-        console.log('creating a new activity!')
-        // console.log(req.body)
+        //pass new values to the activities table model to create a new record
+        //in the activities table and in the same transaction to add multiple records to the join usersActivities table
+
+        var arrayIds = obj["participantsIds"];
+        //hardcoding adminId until passport is working
+        var leaderId = 1; // will have to grab it from req
+        console.log('Creating a new activity!');
         db.activities.create({
-            /*  name: req.body.name,  //we will have to read from req.body.title, etc 
-             description: req.body.description, etc*/
             adminId: leaderId,
-            title: "Project Number 10",
-            description: "Useful full stack web app",
-            location: "San Francisco",
-            estimateStartDate: "July 2019",
-            actType: "project",
+            title: obj.title,
+            description: obj.description,
+            location: obj.location,
+            estimateStartDate: obj.estimateStartDate,
+            actType: obj.actType,
             active: true,
         }).then(function (dbActivity) {
-            console.log("Activity : " + dbActivity);
             //the array will hold objects representing usersActivities table
             var allInvited = [];
 
             //create the corresponding usersActivities objects based on the ids in the arrayIds
             for (var i = 0; i < arrayIds.length; i++) {
                 var inviteeObj = {
-                    userId: arrayIds[i],
+                    userId: parseInt(arrayIds[i]),
                     activityId: dbActivity.dataValues.id,
                     interested: false
                 };

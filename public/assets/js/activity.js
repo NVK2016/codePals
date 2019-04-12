@@ -3,9 +3,7 @@
 $(document).ready(function () {
     console.log("Inside Client Side Activity JS file");
 
-
-    console.log("1");
-
+    //read the adio buttons to set up activity type property
     var actTypeInput;
     if ($("#projRadio").is(":checked")) {
         actTypeInput = "project";
@@ -14,14 +12,10 @@ $(document).ready(function () {
         actTypeInput = "meetup";
     }
 
-    // Adding event listeners to the form to create a new object
-    //$(document).on("submit", "#activity-form", handleNewActivFormSubmit);
-    //$(document).on("click", ".delete-author", handleDeleteButtonPress);
-
+    //add an event listener for the Add Activity button on the addactivity page
     $("#addActButton").on("click", function () {
         event.preventDefault();
         console.log("inside on button click event");
-
 
         // Read the values from the corresponding form's controls 
         var titleInput = $("#title").val().trim();
@@ -48,80 +42,44 @@ $(document).ready(function () {
             return;
         }
 
+        //create an onject to pass it as JSON
         var addedActivity = {
-            adminId: 1,  //will have to authenticate the admin!!!!
-            title: titleInput,
-            location: locationInput,
-            estimateStartDate: startDateInput,
-            actType: actTypeInput,
-            active: true,
-            participantsIds: particIds
+            'adminId': 1,  //will have to authenticate the admin!!!!
+            'title': titleInput,
+            'location': locationInput,
+            'estimateStartDate': startDateInput,
+            'actType': actTypeInput,
+            'active': true,
+            'participantsIds': particIds
         }
 
+        //call addActivity function 
         addActivity(addedActivity);
 
-        /* // Don't do anything if the name fields hasn't been filled out
-      if (!titleInput.val().trim().trim()) {
-          console.log("Activity Title is not provided")
-          return;
-      }
-      else if (!descriptionInput.val().trim().trim()) {
-          console.log("Short Description is not provided")
-          return;
-      }
-      // Calling the upsertAuthor function and passing in the value of the name input
-      upsertAuthor({
-          name: nameInput
-              .val()
-              .trim()
-      }); */
     });
 
-    function addActivity(activity){
+    //addActivity function sends POST request with the JSON containg the data from the text/fields and other controls
+    function addActivity(activity) {
         console.log(window.location.href);
-        console.log("activity "+ activity)
-        $.post(window.location.href, activity, function(){
-          window.location.href = "/donations";
+
+        $.ajax({
+            url: "/addactivity",
+            method: "POST",
+            data: { activity: JSON.stringify(activity) },
+            dataType: "json",
         })
-        $.post("/addactivity", activity)
-      .then(getAuthors);  // correct here!!!!
-      }
+            .done(function (result) {
+                //Need to change it to dashboard 
+                //window.location.href = "/login";
+                alert("success " + result);
 
-
-    // Looks for a query param in the url for userId
-    var url = window.location.href;
-    var activityId;
-
-    // A function to handle what happens when the form is submitted to create a new activity
-    function handleNewActivFormSubmit(event) {
-        event.preventDefault();
-        console.log("2");
-        console.log(palsInput);
-
-        console.log(titleInput);
-        console.log(locationInput);
-        console.log(startDateInput);
-        console.log(descriptionInput);
-        console.log(actTypeInput);
-
-        /* // Don't do anything if the name fields hasn't been filled out
-        if (!titleInput.val().trim().trim()) {
-            console.log("Activity Title is not provided")
-            return;
-        }
-        else if (!descriptionInput.val().trim().trim()) {
-            console.log("Short Description is not provided")
-            return;
-        }
-        // Calling the upsertAuthor function and passing in the value of the name input
-        upsertAuthor({
-            name: nameInput
-                .val()
-                .trim()
-        }); */
+            })
+            .fail(function () {
+                alert("error");
+            });
     }
 
-    // Getting the infoormation for any actitivty 
+    // Getting the information for any actitivty 
     /*   getActivity(activityId);
   
       //
