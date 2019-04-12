@@ -17,10 +17,16 @@ console.log("HTML Route file");
 // =============================================================
 module.exports = function (app) {
 
-    //Welcome page 
+    //Splash page 
     app.get("/", function (req, res) {
-        console.log("Welcome page ", res);
+        console.log("Splash page ", res);
         res.render("index");
+    });
+
+    //Welcome page 
+    app.get("/welcome", function (req, res) {
+        console.log("Welcome page ", res);
+        res.render("login");
     });
 
     //Login page 
@@ -53,12 +59,12 @@ module.exports = function (app) {
     //     res.render("dashboard", res);
     // });
 
-    //View All Members in the site 
-    app.get("/users", function (req, res) {
-        console.log("Display all members and their skills");
-        //Render the dashboard html 
-        res.render("users", res);
-    });
+    // //View All Members in the site 
+    // app.get("/allpals", function (req, res) {
+    //     console.log("Display all members and their skills");
+    //     //Render the dashboard html 
+    //     res.render("users", res);
+    // });
 
     //Signout 
     app.get("/logout", function (req, res) {
