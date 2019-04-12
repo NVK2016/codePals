@@ -1,3 +1,5 @@
+//var bcrypt = require("bcryptjs");
+
 //creating Activity model for activities table
 module.exports = function (sequelize, DataTypes) {
     var Activity = sequelize.define("activities", {
@@ -36,6 +38,15 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: true
         }
     });
+
+ /*    //method for the User Model
+    Activity.generateHash = function (password) {
+        return bcrypt.hashSync(password, 8)
+    };
+
+    Activity.prototype.compareHash = function (password) {
+        return bcrypt.compareSync(password, this.passw)
+    }; */
 
 
     Activity.associate = function (models) {

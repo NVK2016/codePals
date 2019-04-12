@@ -19,7 +19,6 @@ $(document).ready(function () {
 
         // Read the values from the corresponding form's controls 
         var titleInput = $("#title").val().trim();
-
         var locationInput = $("#location").val().trim();
         var startDateInput = $("#tentStartDate").val().trim();
         var descriptionInput = $("#description").val().trim();
@@ -42,15 +41,15 @@ $(document).ready(function () {
             return;
         }
 
-        //create an onject to pass it as JSON
         var addedActivity = {
-            'adminId': 1,  //will have to authenticate the admin!!!!
-            'title': titleInput,
-            'location': locationInput,
-            'estimateStartDate': startDateInput,
-            'actType': actTypeInput,
-            'active': true,
-            'participantsIds': particIds
+            adminId: 1,  //will have to authenticate the admin!!!!
+            title: titleInput,
+            location: locationInput,
+            description: descriptionInput,
+            estimateStartDate: startDateInput,
+            actType: actTypeInput,
+            active: true,
+            participantsIds: particIds,
         }
 
         //call addActivity function 
@@ -75,7 +74,7 @@ $(document).ready(function () {
 
             })
             .fail(function () {
-                alert("error");
+                console.log("There was an error when adding a new activity");
             });
     }
 
