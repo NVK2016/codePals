@@ -13,5 +13,12 @@
 </head>
 
 
-
-<input>Skills: {{users.skills.id}}</input>
+<div class="form-group">
+    <label>Existing Skills</label>
+        <select id="selectSkills" class="form-control chzn-select" multiple="true">
+            {{#each skills}}
+            <option id={{id}}>{{value}}</option>
+            {{/each}}
+        </select>
+    </div>
+</div>

@@ -1,6 +1,9 @@
 # codePals
 <hr />
 Fullstack Appplication Node server Express &amp; mysql. 
+This application will help coonnect people with want to come together to create a usable software , endless possibilties to create an amazing network of people around. 
+
+This app is one spot hub to share information related to tech meetups for codePlas to broswer through the events and slect if they are interested or not. 
 
 -- Screenshot of the App Page  
 
@@ -17,6 +20,8 @@ What things you need installed before running this application.
     npm install mysql2
     npm install express 
     npm install express-handlebars 
+    npm install passport
+    npm install bcryptjs
     -- npm install dotenv --save
 
 

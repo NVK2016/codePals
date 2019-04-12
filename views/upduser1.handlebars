@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+<link rel="stylesheet" href="../public/assets/css/style.css">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+        <img src="../public/assets/img/codepals_logo-02_m.png">
+    </a> 
+    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/allpals">View Members</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upduser">Update Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div id="main-body"></div>
+
+<div class="cont2">
+
+    <div id="content">
+        <section id="sign-up">
+
+            <h1>Update {{firstName}}'s Profile </h1>
+            <div class="form-group">
+                <div class="col-2">
+                    <label for="email">Email:</label>
+                </div>
+                <div class="col-5">
+                    {{email}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fname">First Name: </label>
+                <input type="text" id="fname" value={{firstName}} />
+            </div>
+            <div class="form-group">
+                <input>Last Name:{{lastName}}</input><br>
+            </div>
+            <div class="form-group">
+                <input>Password: {{passw}}</input><br>
+            </div>
+
+            <div class="form-group">
+                <input>Phone:{{phone}}</input><br>
+            </div>
+            <div class="form-group">
+                <input>City: {{city}}</input><br>
+            </div>
+            <div class="form-group">
+                <input>State: {{state}}</input><br>
+            </div>
+            <div class="form-group">
+                <input>Photo:{{photoLink}}</input><br>
+            </div>
+            <div class="col-10 my-2">Existing Skills
+                <select id="selectSkills" class="form-control chzn-select" multiple="true">
+                    {{#each skills}}
+                    <option id={{id}}>{{value}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <button type="submit" id="btn-update">Update User</button>
+
+        </section>
+    </div>
+
+</div>
+
+
+<script src="../assets/js/users.js"></script>
