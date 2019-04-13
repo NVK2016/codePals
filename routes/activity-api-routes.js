@@ -35,11 +35,11 @@ module.exports = function (app) {
                 var allActArr = [];
                 for (var i = 0; i < allActivity.length; i++) {
                     allActArr.push(allActivity[i].dataValues)
+                    allActArr[i].isMine = (allActivity[i].dataValues.adminId === usId)
                 };
 
                 db.users.findOne({
                     where: { id: usId },
-                    // where: { userid: req.userId },
                     include: [{ model: db.activities, as: "activities" }]
                 }).then(function (dbUser) {
 
@@ -50,8 +50,9 @@ module.exports = function (app) {
 
                     var activities = [];
                     for (var i = 0; i < user.activities.length; i++) {
+                        if(user.activities[i].dataValues.actType === 'project'){
                         activities.push(user.activities[i].dataValues);
-                        activities[i].isMine = (user.activities[i].dataValues.adminId === user.id);
+                        activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)};
                     };
 
                     var userInfo = {
@@ -216,6 +217,19 @@ module.exports = function (app) {
 
 
     });
+
+
+    app.put("/updateinterest", function(req, res){
+        db.usersActivities.update(
+            {interested:req.body.interested
+            },{
+            where:{
+                userId: req.session.passport.user.id,
+                activityId: req.body.activityId
+            }}).then(function(data){
+                res.redirect("/dashboard")
+            })
+    })
 
     //Updates the activity with the member values 
     app.put('/updactivity', function (req, res) {

@@ -93,12 +93,14 @@
                             <td>{{description}}</td>
                             <td>
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                    <label class="custom-control-label" for="customSwitch1">Interested?</label>
+                                    <input type="checkbox" data-activityId={{id}} id="customSwitch{{id}}"
+                                        class="custom-control-input projInterest">
+                                    <label class="custom-control-label" for="customSwitch{{id}}">Interested?</label>
                                 </div>
                             </td>
                             {{#if isMine}}
-                            <td><button class="btn btn-primary">Update</button></td>
+                            <td><button class="btn btn-primary updateAct"
+                                        data-activityId={{id}}>Update</button></td>
                             {{/if}}
                         </tr>
 
@@ -110,7 +112,7 @@
             </div>
         </div>
 
-        <div class="card-header" style="color:rgb(25, 136, 94);">
+        <div class="card-header mt-5" style="color:rgb(25, 136, 94);">
             <div class="col-sm">
                 <img src='./assets/images/dashImage.jpg' class="imgPort">
                 <h3>Available Meetups</h3>
@@ -122,6 +124,8 @@
                             <th scope="col">Type</th>
                             <th scope="col">Description</th>
                             <th scope="col">Interested?</th>
+                            <th scope="col">Update</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -132,10 +136,16 @@
                             <td>{{title}} </td>
                             <td>{{actType}}</td>
                             <td>{{description}}</td>
-                            <td><button class="btn btn-success">Yes
-                                </button>
-                                <button class="btn btn-danger">No</button>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" data-activityId={{id}} id="customSwitch{{id}}"
+                                        class="custom-control-input projInterest">
+                                    <label class="custom-control-label" for="customSwitch{{id}}">Interested?</label>
+                                </div>
                             </td>
+                            {{#if isMine}}
+                            <td><button class="btn btn-primary updateAct" data-activityId={{id}}>Update</button></td>
+                            {{/if}}
                         </tr>
                         {{/each}}
                     </tbody>
@@ -146,3 +156,36 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".projInterest").on("change", function (event) {
+            event.preventDefault();
+            var data = { activityId: $(this).attr("data-activityId") }
+            if ($(this).is(':checked')) {
+                data.interested = true;
+            }
+            else {
+                data.interested = false;
+            };
+            console.log(data)
+            $.ajax("/updateinterest", {
+                method: 'PUT',
+                data: data
+            }).then(function (response) {
+                console.log(response)
+            })
+        });
+
+        $(".updateAct").on("click", function (event) {
+            event.preventDefault();
+            console.log("Update Clicked")
+            $.ajax("/updactivity", {
+                method: 'GET',
+                data: { activityId: $(this).attr("data-activityId") }
+            }).then(function (response) {
+                console.log(response)
+            })
+        });
+    });
+</script>
