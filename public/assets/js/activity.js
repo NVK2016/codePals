@@ -122,5 +122,7 @@ $(document).ready(function () {
                 //Need to change it to dashboard 
                 window.location.href = "/login";
             });
-    })
+    });
+
+    
 });

@@ -47,6 +47,7 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+
 //Using session
 app.use(session({
   key: 'user_sid',
@@ -54,14 +55,14 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
-      expires: 600000,
-      httpOnly: false
+    expires: 600000,
+    httpOnly: false
   }
 }));
- 
+
 // Passport middleware
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 
 
 // Routes
