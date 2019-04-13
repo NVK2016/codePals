@@ -23,7 +23,6 @@ var PORT = process.env.PORT || 8080;
 //use local-stratey defined in config folder
 require('./config/passport')(passport);
 
-
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -43,6 +42,13 @@ app.use(express.static("public"));
 
 // Set Handlebars.
 var exphbs = require("express-handlebars");
+
+var hbs = exphbs.create({
+  // Specify helpers which are only registered on this instance.
+  helpers: {
+      renderProjectType: function (projType) { if(projType === "project")return true;},
+  }
+});
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");

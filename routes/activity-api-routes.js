@@ -3,6 +3,9 @@ var passport = require('passport');
 
 console.log("Activity Route file");
 
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 module.exports = function (app) {
 
     //Get all the open activities 
@@ -88,11 +91,13 @@ module.exports = function (app) {
     app.get('/updactivity/:id', function (req, res) {
         /*  if (req.isAuthenticated()) { */
         console.log("The user is authenticated");
+        //const Op = Sequelize.Op;
         var id = req.params.id;
         //console.log(req.session.passport.user);
         //var usId = req.session.passport.user.id;
         //pass each activity via an id
         //this object will contain all the data we want
+        var addedUsers = [];
         var hbsCurrentUsers = {
             activityUsers: [],
             allUsers: []
@@ -105,21 +110,39 @@ module.exports = function (app) {
             console.log("inside first promise");
             hbsCurrentUsers.activityUsers = dbActivity;
 
+            //var obj = JSON.parse(dbActivity);
+
+            var addedUsers = dbActivity[0].users;
+            console.log("addedUsers " + addedUsers.length);
+            var addeduserIds = [];
+            for (var i = 0; i < addedUsers.length; i++) {
+                addeduserIds.push(addedUsers[i].id);
+            }
+            console.log("ids array" + addeduserIds);
+
+
             db.users.findAll({
                 //Dont include logged in user 
+                //using the not operator of sequlize i.e example: userid NOT "1                   
                 where: {
-                    active: 1
-                } 
+                    id: { [Op.notIn]: addeduserIds }
+                }
             }).then(function (dbUsers) {
                 console.log("inside second promise");
+                //filter out the user who were not invited yet
+                console.log("currentUsers " + addedUsers.length);
+                //accessing allUsers and filtering out the users not invited yet
+                var all = dbUsers;
+                console.log("All Users " + all.length);
+
                 hbsCurrentUsers.allUsers = dbUsers;
                 //SEND JSON TO TEST
                 //res.json(hbsCurrentUsers);
                 res.render("updactivity", hbsCurrentUsers);
                 //populate the handlebars object with the current users for the current activity
 
-            })               
-             
+            })
+
             /* }
             else {
                 //if the user is not authenticated, redirect him to the home page
@@ -130,84 +153,82 @@ module.exports = function (app) {
 
     });
 
-        //Add a new Project / Meetup  
-        app.post('/addactivity', function (req, res) {
+    //Add a new Project / Meetup  
+    app.post('/addactivity', function (req, res) {
 
-            if (req.isAuthenticated()) {
-                console.log("The user is authenticated");
-                console.log(req.session.passport.user);
-                var usId = req.session.passport.user.id;
+        if (req.isAuthenticated()) {
+            console.log("The user is authenticated");
+            console.log(req.session.passport.user);
+            var usId = req.session.passport.user.id;
 
-                console.log(req.body.activity);
-                var obj = JSON.parse(req.body.activity); //getting an object from json 
-                console.log(obj);
-                //var leaderId = passedActivity.adminId;   //will use if passport works!!!!!!
-                var leaderId = usId; // will have to grab it from req
-                //pass new values to the activities table model to create a new record
-                //in the activities table and in the same transaction to add multiple records to the join usersActivities table
+            console.log(req.body.activity);
+            var obj = JSON.parse(req.body.activity); //getting an object from json 
+            console.log(obj);
+            //var leaderId = passedActivity.adminId;   //will use if passport works!!!!!!
+            var leaderId = usId; // will have to grab it from req
+            //pass new values to the activities table model to create a new record
+            //in the activities table and in the same transaction to add multiple records to the join usersActivities table
 
-                var arrayIds = obj["participantsIds"];
-                //hardcoding adminId until passport is working
+            var arrayIds = obj["participantsIds"];
+            //hardcoding adminId until passport is working
 
-                console.log('Creating a new activity!');
-                db.activities.create({
-                    adminId: leaderId,
-                    title: obj.title,
-                    description: obj.description,
-                    location: obj.location,
-                    estimateStartDate: obj.estimateStartDate,
-                    actType: obj.actType,
-                    active: true,
-                }).then(function (dbActivity) {
-                    //the array will hold objects representing usersActivities table
-                    var allInvited = [];
+            console.log('Creating a new activity!');
+            db.activities.create({
+                adminId: leaderId,
+                title: obj.title,
+                description: obj.description,
+                location: obj.location,
+                estimateStartDate: obj.estimateStartDate,
+                actType: obj.actType,
+                active: true,
+            }).then(function (dbActivity) {
+                //the array will hold objects representing usersActivities table
+                var allInvited = [];
 
-                    //create the corresponding usersActivities objects based on the ids in the arrayIds
-                    for (var i = 0; i < arrayIds.length; i++) {
-                        var inviteeObj = {
-                            userId: parseInt(arrayIds[i]),
-                            activityId: dbActivity.dataValues.id,
-                            interested: false
-                        };
-                        allInvited.push(inviteeObj);
-                    }
-
-                    //create the usersActivities object for the admin and push it to the array
-                    var adminObj = {
-                        userId: leaderId,
+                //create the corresponding usersActivities objects based on the ids in the arrayIds
+                for (var i = 0; i < arrayIds.length; i++) {
+                    var inviteeObj = {
+                        userId: parseInt(arrayIds[i]),
                         activityId: dbActivity.dataValues.id,
-                        interested: true
+                        interested: false
                     };
-                    allInvited.push(adminObj);
+                    allInvited.push(inviteeObj);
+                }
 
-                    //insert multiple records from the array to the usersActivities table
-                    db.usersActivities.bulkCreate(allInvited, {
-                        returning: true
-                    }).then(function (dbUsersActivities) {
-                        console.log("Activity added " + dbUsersActivities.dataValues);
-                        res.json(dbUsersActivities);
-                        //will have to redirect to a dashboard for the user
-                    })
-                        .catch(function (err) {
-                            console.log(err);
-                            res.json(error);
-                        });
+                //create the usersActivities object for the admin and push it to the array
+                var adminObj = {
+                    userId: leaderId,
+                    activityId: dbActivity.dataValues.id,
+                    interested: true
+                };
+                allInvited.push(adminObj);
 
-
+                //insert multiple records from the array to the usersActivities table
+                db.usersActivities.bulkCreate(allInvited, {
+                    returning: true
+                }).then(function (dbUsersActivities) {
+                    console.log("Activity added " + dbUsersActivities.dataValues);
+                    res.json(dbUsersActivities);
+                    //will have to redirect to a dashboard for the user
                 })
-            }
-            else {
-                console.log("auth", req.isAuthenticated());
-                res.redirect("/");
-            }
+                    .catch(function (err) {
+                        console.log(err);
+                        res.json(error);
+                    });
+            })
+        }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        }
 
 
-        });
+    });
 
-        //Updates the activity with the member values 
-        app.put('/updactivity', function (req, res) {
+    //Updates the activity with the member values 
+    app.put('/updactivity', function (req, res) {
 
-        });
+    });
 
-    };
+};
 
