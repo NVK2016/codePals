@@ -1,19 +1,30 @@
-<ul class="nav">
-    <li class="nav-item">
-        <a class="nav-link active" href="#">Active</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-    </li>
-</ul>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    {{!--     <a class="navbar-brand" href="#">
+        <img src="../public/assets/img/codepals_logo-02_m.png">
+    </a> --}}
+    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/allpals">View Members</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/upduser">Update Profile</a>
+            </li>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light w" style="height:100px">
+            <li class="nav-item">
+                <a class="nav-link" id="headerLogo" href="/addactivity">
+                    Create New Activity</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Sign Out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{{!-- <nav class="navbar navbar-expand-lg navbar-light bg-light w" style="height:100px">
     <a class="col-3 navbar-brand text-white text-center bg-info" id="headerLogo" href="/upduser"
         style="height:100px">
         Update Profile</a>
@@ -50,9 +61,10 @@
 
     </button>
 
-</nav>
+</nav> --}}
 
 <div class="container">
+    <h1>Welcome {{firstName}} {{lastName}}</h1>
     <div class="card-body">
 
         <div class="card-header" style="color:rgb(19, 235, 152);">
@@ -65,47 +77,42 @@
                             <th scope="col">Date</th>
                             <th scope="col">Title</th>
                             <th scope="col">Type</th>
-
                             <th scope="col">Description</th>
                             <th scope="col">Interested?</th>
+                            <th scope="col">Update</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        {{each activity}}
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>{{activity.estimateStartDate}}</td>
-                            <td>{{activity.title}} </td>
-                            <td>{{activity.actType}}</td>
+                        {{#each myActivities}}
 
-                            <td>{{activity.Description}}</td>
-                            <td><button class="btn btn-success">Yes
-                                </button>
-                                <button class="btn btn-danger">No</button>
-                            </td>
-                        </tr>
-                        {{/each activity}}
-                        {{each activity}}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>{{activity.estimateStartDate}}</td>
-                            <td>{{activity.title}} </td>
-                            <td>{{activity.actType}}</td>
-
-                            <td>{{activity.Description}}</td>
-                            <td><button class="btn btn-success">Yes
-                                </button>
-                                <button class="btn btn-danger">No</button>
+                            <td>{{estimateStartDate}}</td>
+                            <td>{{title}} </td>
+                            <td>{{actType}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" data-activityId={{id}} id="customSwitch{{id}}"
+                                        class="custom-control-input projInterest">
+                                    <label class="custom-control-label" for="customSwitch{{id}}">Interested?</label>
+                                </div>
                             </td>
+                            {{#if isMine}}
+                            <td><button class="btn btn-primary updateAct"
+                                        data-activityId={{id}}>Update</button></td>
+                            {{/if}}
                         </tr>
-                        {{/each activity}}
+
+
+                        {{/each}}
+
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="card-header" style="color:rgb(25, 136, 94);">
+        <div class="card-header mt-5" style="color:rgb(25, 136, 94);">
             <div class="col-sm">
                 <img src='./assets/images/dashImage.jpg' class="imgPort">
                 <h3>Available Meetups</h3>
@@ -117,24 +124,30 @@
                             <th scope="col">Type</th>
                             <th scope="col">Description</th>
                             <th scope="col">Interested?</th>
+                            <th scope="col">Update</th>
+
                         </tr>
                     </thead>
                     <tbody>
 
-                        {{each activity}}
+                        {{#each allActivities}}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>{{activity.estimateStartDate}}</td>
-                            <td>{{activity.title}} </td>
-                            <td>{{activity.actType}}</td>
-
-                            <td>{{activity.Description}}</td>
-                            <td><button class="btn btn-success">Yes
-                                </button>
-                                <button class="btn btn-danger">No</button>
+                            <td>{{estimateStartDate}}</td>
+                            <td>{{title}} </td>
+                            <td>{{actType}}</td>
+                            <td>{{description}}</td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" data-activityId={{id}} id="customSwitch{{id}}"
+                                        class="custom-control-input projInterest">
+                                    <label class="custom-control-label" for="customSwitch{{id}}">Interested?</label>
+                                </div>
                             </td>
+                            {{#if isMine}}
+                            <td><button class="btn btn-primary updateAct" data-activityId={{id}}>Update</button></td>
+                            {{/if}}
                         </tr>
-                        {{/each activity}}
+                        {{/each}}
                     </tbody>
                 </table>
             </div>
@@ -143,3 +156,36 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".projInterest").on("change", function (event) {
+            event.preventDefault();
+            var data = { activityId: $(this).attr("data-activityId") }
+            if ($(this).is(':checked')) {
+                data.interested = true;
+            }
+            else {
+                data.interested = false;
+            };
+            console.log(data)
+            $.ajax("/updateinterest", {
+                method: 'PUT',
+                data: data
+            }).then(function (response) {
+                console.log(response)
+            })
+        });
+
+        $(".updateAct").on("click", function (event) {
+            event.preventDefault();
+            console.log("Update Clicked")
+            $.ajax("/updactivity", {
+                method: 'GET',
+                data: { activityId: $(this).attr("data-activityId") }
+            }).then(function (response) {
+                console.log(response)
+            })
+        });
+    });
+</script>

@@ -1,59 +1,57 @@
 {{!-- Calling Client JS --}}
-{{!-- <script src="/assets/js/activity.js"></script> --}}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
-<link rel="stylesheet" href="../public/assets/css/style.css">
-<script src="../assets/js/activity.js"></script>
-
-
-</head>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!--     <a class="navbar-brand" href="#">
+  {{!--     <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
-    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
-    <div class="collapse navbar-collapse" id="navbarText">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/allpals">View Members</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/upduser">Update Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Sign Out</a>
-            </li>
-        </ul>
-    </div>
+  <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/allpals">View Members</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/upduser">Update Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Sign Out</a>
+      </li>
+    </ul>
+  </div>
 </nav>
 
-  <div class="container">
-    <div class="card-body">
+<div class="container">
+  <div class="card-body"></div>
 
-      <div class="card-header" style="color:#E23B0F">
-        <div class="col-sm">
-          <img src='./assets/images/dashImage.jpg' class="imgPort">
-          <h3>All Members</h3>
-          <div class="row">
-            {{#each users}}
-            <div class="column">
-              <div class="card" style="width:60%;">
-                <img src={{photoLink}} alt="MemberPic" style="width:100%">
-                <div class="container">
-                  <p> <strong>{{firstName}} {{lastName}}</strong> </p>
-                  <!-- <p class="title">Coding Novice</p> -->
-                  <p>My Skills: {{skills.id}}</p>
-                  <p>{{email}}</p>
-                  <p><button class="button">Contact</button></p>
-                </div>
+    <div class="card-header">
+        <h3 class="text-success">All Members</h3>
+
+        <div class="row m-5">
+          {{!-- Prints out Each user Info --}}
+          {{#each users}}
+            <div class="col-6">
+            <div class="card">
+              <img src={{photoLink}} alt="MemberPic" style="width:100%">
+              <div class="container">
+                <h3>{{firstName}} {{lastName}}</h3>
+                <p> <strong>Skills: </strong>
+                  {{!-- All user skills for each user --}}
+                  {{#each skills}}
+                  <ul>
+                    <li>{{skillType}} - {{skill}}</li>
+                  </ul>
+                  {{/each}}
+                </p>
+                <label>Email : <a href="mailto:"{{email}}>{{email}}</a></label>
+                <p><button class="button btn-warning" onclick="mailto:" {{email}}>Invite Member</button></p>
               </div>
+               <br />
             </div>
-            {{/each}}
-
-          </div>
-
-        </div>
-      </div>
+            </div>
+          {{/each}}
+         
+          {{!-- End of row --}}
+        </div> 
+        
+    </div>
+  </div>
+</div>

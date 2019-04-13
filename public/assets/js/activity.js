@@ -1,11 +1,23 @@
 
 //Ready Event occurs when all the DOM elements are loaded 
 $(document).ready(function () {
-    console.log("Inside Client Side Activity JS file");
+    console.log("Inside Client Side Activity JS file");    
+
 
     //add an event listener for the Add Activity button on the addactivity page
     $("#addActButton").on("click", function () {
         event.preventDefault();
+        
+        //read the radio buttons to set up activity type property
+       var actTypeInput;
+       if ($("#projRadio").is(':checked')) {
+           actTypeInput = "project";
+       }
+       else if ($("#meetupRadio").is(':checked')) {
+           actTypeInput = "meetup";
+       }
+
+
         console.log("inside on button click event");
 
         //read the radio buttons to set up activity type property
