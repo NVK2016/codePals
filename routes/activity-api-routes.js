@@ -153,8 +153,9 @@ module.exports = function (app) {
             }).then(function (dbUsers) {
                 console.log("inside second promise");
                 hbsCurrentUsers.allUsers = dbUsers;
-                //send json 
-                res.json(hbsCurrentUsers);
+                //SEND JSON TO TEST
+                //res.json(hbsCurrentUsers);
+                res.render("updactivity", hbsCurrentUsers);
                 //populate the handlebars object with the current users for the current activity
 
             })               

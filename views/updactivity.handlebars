@@ -46,9 +46,9 @@
                 <label for="title" class="required">Project Title:</label>
             </div>
             <div class="col-5">
-                <input id="title" type="text" placeholder={{activity.title}}>
+                <textarea class="form-control" id="title"
+                    rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
             </div>
-
         </div>
 
         <div class="row my-2">
@@ -56,16 +56,19 @@
                 <label for="location">Location (City):</label>
             </div>
             <div class="col-10">
-                <input id="location" type="text" placeholder={{activity.location}}>
+                <textarea class="form-control" id="location"
+                    rows="1">{{#each activityUsers}}{{location}}{{/each}}</textarea>
             </div>
         </div>
+
 
         <div class="row my-2">
             <div class="col-2">
                 <label for="tentStartDate">Tentative Start Date:</label>
             </div>
             <div class="col-10">
-                <input type="text" id="tentStartDate" placeholder={{activity.estimateStartDate}} >
+                <textarea class="form-control" id="tentStartDate"
+                    rows="1">{{#each activityUsers}}{{estimateStartDate}}{{/each}}</textarea>
             </div>
         </div>
 
@@ -92,18 +95,29 @@
                 <label for="description">Short Description:</label>
             </div>
             <div class="col-10">
-                <textarea class="form-control" rows="2" id="description" placeholder={{activity.description}} ></textarea>
+                <textarea class="form-control" rows="2" id="description">{{#each activityUsers}}{{description}}{{/each}}</textarea>
             </div>
         </div>
 
         <div class="row my-2">
             <div class="col-2">
-                <label for="description">Invited CodePals::</label>
+                <label for="status">Activity Status:</label>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" rows="1" id="status">{{!-- {{#each activityUsers}} {{#if active}} Active {{/each}} --}}</textarea>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="description">Invited CodePals:</label>
             </div>
             <div class="col-10">
                 <ul>
-                    {{#each }}
-
+                    {{#each activityUsers}}
+                        {{#each users}}
+                        {{firstName}} {{lastName}}
+                        {{/each}}
                     {{/each}}
                 </ul>
             </div>
@@ -115,7 +129,7 @@
             </div>
             <div class="col-10 my-2">
                 <select id="selectCodePals" class="form-control chzn-select" multiple="true">
-                    {{#each users}}
+                    {{#each allUsers}}
                     {{#if active}}
                     <option>{{id}}.{{firstName}} {{lastName}}</option>
                     {{/if}}
