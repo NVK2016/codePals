@@ -43,14 +43,25 @@ app.use(express.static("public"));
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
-var hbs = exphbs.create({
-  // Specify helpers which are only registered on this instance.
+//We have to register two helper functions for updactivity.handlebars page to 
+//check the corresponding radiobuttons for activity type
+app.engine("handlebars", exphbs({
+  defaultLayout: "main",
   helpers: {
-      renderProjectType: function (projType) { if(projType === "project")return true;},
+    renderProjectType: function (projType) {
+      if (projType === "project")
+        return "checked";
+      else return "";
+    },
+    renderProjectTypeMeet: function (projType) {
+      if (projType === "meetup")
+        return "checked";
+      else return "";
+    }
   }
-});
+}));
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+
 app.set("view engine", "handlebars");
 
 

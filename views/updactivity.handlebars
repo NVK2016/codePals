@@ -78,6 +78,26 @@
 
         <div class="row my-2">
             <div class="col-2">
+                <label for="status">Activity Type:</label>
+            </div>
+            <div class="col-10">
+               <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="radioActType" id="projRadio"
+                            {{#each activityUsers}} {{renderProjectType actType}} {{/each}}>Project
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="radioActType" id="meetupRadio"
+                            {{#each activityUsers}}{{renderProjectTypeMeet actType}} {{/each}}>Meetup
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
                 <label for="description">Short Description:</label>
             </div>
             <div class="col-10">
@@ -145,4 +165,12 @@
     $(function () {
         $(".chzn-select").chosen();
     });
+
+    exphbs.registerHelper("renderProjectType", function (value, options) {
+        console.log("inside helper");
+        if (value === "project")
+            return true;
+        else return false;
+    });
+
 </script>

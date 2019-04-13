@@ -24,13 +24,7 @@ $(document).ready(function () {
         var descriptionInput = $("#description").val().trim();
         var palsInput = $("#selectCodePals").chosen().val();
 
-       /*  console.log(palsInput);
-        console.log(titleInput);
-        console.log(locationInput);
-        console.log(startDateInput);
-        console.log(descriptionInput);
-        console.log("act type " + actTypeInput); */
-
+        //create and fill out the array with participant ids
         var particIds = [];
         for (var i = 0; i < palsInput.length; i++) {
             particIds.push(palsInput[i].charAt(0));
@@ -69,22 +63,13 @@ $(document).ready(function () {
         })
             .done(function (result) {
                 console.log("The new activity was added successfully!")
-                window.location.href = "./dashboard"; 
+                window.location.href = "./dashboard";
             })
             .fail(function () {
                 console.log("There was an error when adding a new activity");
             });
     }
 
-    // Getting the information for any actitivty 
-    /*   getActivity(activityId);
-  
-      //
-      function getActivity(activityId) {
-          $.get("/dashboard?id=" + activityId, function (data) {
-              console.log("Activity", data);
-          });
-      } */
 
     //Edit the URL & Enable the form on Edit button click 
     $("#btn_updUser").on("click", function () {
@@ -124,5 +109,4 @@ $(document).ready(function () {
             });
     });
 
-    
 });
