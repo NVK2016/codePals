@@ -113,10 +113,10 @@
                 <label for="description">Invited CodePals:</label>
             </div>
             <div class="col-10">
-                <ul>
+                <ul class="pr-3">
                     {{#each activityUsers}}
                         {{#each users}}
-                        {{firstName}} {{lastName}}
+                        *{{firstName}} {{lastName}}
                         {{/each}}
                     {{/each}}
                 </ul>
