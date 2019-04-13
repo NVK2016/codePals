@@ -3,6 +3,7 @@ var passport = require('passport');
 
 console.log("Activity Route file");
 
+//we will use sequelize operators Op such as notIn for filtering
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -118,16 +119,13 @@ module.exports = function (app) {
                 addeduserIds.push(addedUsers[i].id);
             }
 
-            db.users.findAll({                
+            //filtering out the user already were invited
+            db.users.findAll({
                 where: {
                     id: { [Op.notIn]: addeduserIds }
                 }
             }).then(function (dbUsers) {
-
-                //filter out the user who were not invited yet
-                console.log("currentUsers " + addedUsers.length);
-                //accessing allUsers and filtering out the users not invited yet
-                var all = dbUsers;
+                //var all = dbUsers;
 
                 hbsCurrentUsers.allUsers = dbUsers;
                 //res.json(hbsCurrentUsers);  //this line was used for testing
