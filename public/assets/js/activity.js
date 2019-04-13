@@ -24,12 +24,12 @@ $(document).ready(function () {
         var descriptionInput = $("#description").val().trim();
         var palsInput = $("#selectCodePals").chosen().val();
 
-        console.log(palsInput);
+       /*  console.log(palsInput);
         console.log(titleInput);
         console.log(locationInput);
         console.log(startDateInput);
         console.log(descriptionInput);
-        console.log("act type " + actTypeInput);
+        console.log("act type " + actTypeInput); */
 
         var particIds = [];
         for (var i = 0; i < palsInput.length; i++) {

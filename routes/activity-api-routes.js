@@ -58,47 +58,6 @@ module.exports = function (app) {
         }
     });
 
-    //authentication function for both login and signup
-    function passportAuthenticate(localStrategy, req, res, next) {
-        // console.log(localStrategy, req.body, next)
-        passport.authenticate(localStrategy, function (err, user, info) {
-            if (err) {
-                console.log("passport login/signup err", err)
-                return next(err);
-            }
-            if (!user) {
-                console.log("************", err, user, info)
-                if (info.from === "signup") {
-                    return res.render('signup', info)
-                }
-                else if (info.from === "login") {
-                    return res.render("auth", info)
-                }
-            } else {
-                console.log("passed ++++++++++++++++")
-                req.login(user, function (err) {
-                    if (err) {
-                        console.log(err)
-                        return next(err);
-                    } else {
-                        console.log("\n##########################");
-                        console.log(req.isAuthenticated());
-                        console.log('sucess');
-                        console.log(req.session.passport.user.dataValues.id);
-                        console.log("##########################");
-                        console.log("\n")
-                        return res.redirect("/dashboard");
-                    }
-
-
-                    //   return res.redirect('/users/' + user.username);
-                    // 
-                });
-            }
-
-        })(req, res, next);
-    };
-
 
     //the get request for adding a new activity page
     app.get('/addactivity', function (req, res) {
@@ -126,9 +85,10 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
-    app.get('/updactivity', function (req, res) {
+    app.get('/updactivity/:id', function (req, res) {
         /*  if (req.isAuthenticated()) { */
         console.log("The user is authenticated");
+        var id = req.params.id;
         //console.log(req.session.passport.user);
         //var usId = req.session.passport.user.id;
         //pass each activity via an id
@@ -139,7 +99,7 @@ module.exports = function (app) {
         };
 
         db.activities.findAll({
-            where: { id: 15 },
+            where: { id: id },
             include: [{ model: db.users, as: "users" }]
         }).then(function (dbActivity) {
             console.log("inside first promise");
