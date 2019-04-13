@@ -6,9 +6,9 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!--     <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
-    </a> --}}
+    </a> 
     <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
@@ -26,21 +26,34 @@
 </nav>
 
 <div class="row mt-5">
+    <div class="col-4 ml-5">
+        <div class="card-body">
+                <form>
+                    <fieldset class="card-header">
+                        <legend class="scheduler-border">Add New Skill</legend>
+                        <label for="skill name" class="required"> Skill Name : </label>
+                        <input type="text" id="skillName">
+                        <br>
+                        <label for="skill type">Skill Type:</label>
+                        <input type="text" id="skillType" placeholder="Front-end or Back-End Skill"><br>
+                        </fields>
+                        <br />
+                        <button class="btn-success" type="submit" id="btn-newSkill">Add User Skill</button>
+                        <br />
+                    </fieldset>
+                </form>
+            </div>
+    </div>
     <div class="col-md-6 m-auto">
         <div class="card card-body">
             <h1 class="text-center mb-3">
                 <i class="fas fa-user-plus"></i> Update Profile
             </h1>
             <div class="form-group">
-               <a href="/userSkills">Add New Skills</a>
-                   
-                </div>
-            <br /> 
-
-            <div class="form-group">
                 <label for="first name">First Name</label>
                 <input type="firstName" id="firstName" name="firstName" class="form-control"
-                    placeholder="Enter First Name" value={{firstName}} tabindex="0" />
+                    placeholder="Enter First Name" value={{firstName}} tabindex="0" 
+                    pattern="[A-Za-z]" title="Letters only and no spaces" />
             </div>
 
             <div class="form-group">
@@ -79,24 +92,37 @@
 
             <div class="form-group">
                 <label for="photo">Photo:</label>
-                <input id="photo" type="image" autocomplete="photo" required value={{photoLink}} tabindex="6"><br>
+                <input id="photo" type="text" autocomplete="photo" required value={{photoLink}} tabindex="6" autofocus><br>
             </div>
 
             <div class="form-group">
-               <label>Existing Skills</label>
-                    <select id="selectSkills" class="form-control chzn-select" multiple="true">
-                        {{#each skills}}
-                        <option id={{id}}>{{value}}</option>
-                        {{/each}}
-                    </select>
+               <label>Existing Skill Sets: 
+                   {{#each userSkills}}
+                        {{value}}
+                    {{/each}}
+                </label>
+                <select id="selectSkills" class="form-control chzn-select" multiple="true">
+                    {{#each skills}}
+                    <option id={{id}}>{{value}}</option>
+                    {{/each}}
+                </select>
                 </div>
             </div>
+           
 
             <button class="btn-success" type="submit" id="btn-update">Update User</button>
 
         </div>
     </div>
+     
 </div>
+
+{{!-- This code helps to give it the fancy look  --}}
+<script type="text/javascript">
+    $(function () {
+        $(".chzn-select").chosen();
+    });
+</script>
 
 {{!-- Calling Client JS --}}
 <script src="/assets/js/users.js"></script>
