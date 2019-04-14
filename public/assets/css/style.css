@@ -3,18 +3,20 @@
   outline: 0;
   display: inline-block;
   padding: 8px;
+  background-color: #0ba14b;
   color: white !important;
   /* background-color: gray; */
   text-align: center;
   cursor: pointer;
-  width: 100%;
+  width: relative;  
+
 }
 #sign-up > button > a{
   color: white;
 }
 
 .button:hover {
-  background-color: green;
+  background-color: #9ACD32;
 }
 
 input{
@@ -83,4 +85,19 @@ input{
 
 label{
   font-weight: 600;
+}
+
+.navbar-brand {
+  color: #E23B0F;
+}
+
+#welcomelogo {
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+h2, h3 {
+  color: #E23B0F;
 }
