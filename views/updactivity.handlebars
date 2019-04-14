@@ -83,13 +83,13 @@
             <div class="col-10">
                <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="radioActType" id="projRadio"
+                        <input type="radio" class="form-check-input" name="radioActType" id="projectRadio"
                             {{#each activityUsers}} {{renderProjectType actType}} {{/each}}>Project
                     </label>
                 </div>
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="radioActType" id="meetupRadio"
+                        <input type="radio" class="form-check-input" name="radioActType" id="meetRadio"
                             {{#each activityUsers}}{{renderProjectTypeMeet actType}} {{/each}}>Meetup
                     </label>
                 </div>
@@ -166,11 +166,11 @@
         $(".chzn-select").chosen();
     });
 
-    exphbs.registerHelper("renderProjectType", function (value, options) {
+   {{!--  exphbs.registerHelper("renderProjectType", function (value, options) {
         console.log("inside helper");
         if (value === "project")
             return true;
         else return false;
-    });
+    }); --}}
 
 </script>

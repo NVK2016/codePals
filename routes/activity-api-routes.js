@@ -11,7 +11,7 @@ module.exports = function (app) {
 
     //The api route returns all open meetups
     app.get('/meetups', function (req, res) {
-        db.activities.findAll({ where: { active: 1,  actType: 'meetup'} }).then(function (dbActivities) {
+        db.activities.findAll({ where: { active: 1, actType: 'meetup' } }).then(function (dbActivities) {
             console.log(dbActivities);
             res.json(dbActivities)
         })
@@ -116,7 +116,7 @@ module.exports = function (app) {
         /*  if (req.isAuthenticated()) { */
         console.log("Inside updactivity  -  The user is authenticated");
         var activId = req.params.id; //retrieve the parameter which is activityId
-    
+
         //The object will contain all the data we want to display on update activity page
         //we will create one big object containg two arrays of objects:
         //first includes all the activity data plus all participating users, and another 
@@ -182,13 +182,12 @@ module.exports = function (app) {
             console.log(req.body.activity);
             var obj = JSON.parse(req.body.activity); //getting an object from json 
             console.log(obj);
-            //var leaderId = passedActivity.adminId;   //will use if passport works!!!!!!
+            //we use userid stored in the session as an adminId
             var leaderId = usId; // will have to grab it from req
             //pass new values to the activities table model to create a new record
             //in the activities table and in the same transaction to add multiple records to the join usersActivities table
 
             var arrayIds = obj["participantsIds"];
-            //hardcoding adminId until passport is working
 
             console.log('Creating a new activity!');
             db.activities.create({
@@ -241,11 +240,55 @@ module.exports = function (app) {
         }
     });
 
-    //Updates the activity with the member values 
+    //PUT route for updating activity
     app.put('/updactivity', function (req, res) {
 
-    });
+        /*  if (req.isAuthenticated()) { */
+        console.log("The user is authenticated");
+        /*   console.log(req.session.passport.user);
+          var usId = req.session.passport.user.id; */
 
+        console.log(req.body.activity);
+        var obj = JSON.parse(req.body.activity); //getting an object from json 
+        console.log(obj);
+        //we use userid stored in the session as an adminId
+        //var leaderId = usId; // will have to grab it from req
+        //pass new values to the activities table model to create a new record
+        //in the activities table and in the same transaction to add multiple records to the join usersActivities table
+
+        //var arrayIds = obj["participantsIds"];
+
+        console.log('Updating an activity!');
+        db.activities.update(
+            {
+                title: obj.title,
+                description: obj.description,
+                location: obj.location,
+                estimateStartDate: obj.estimateStartDate,
+                actType: obj.actType,
+                active: obj.active
+            },
+            {
+                where: {
+                    //id: req.body.id
+                    id: obj.activityId
+                }
+            }).
+            then(function (dbActivity) {
+
+                //do bulk insert here to add new users to the join userActivity table
+                console.log("Updated activities table");
+                res.redirect("/dashboard");
+            });
+
+
+        /* }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        } */
+       
+    });
 };
 
 //******HALINA PART 2 END*****************************//
