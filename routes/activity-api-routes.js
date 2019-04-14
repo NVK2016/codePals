@@ -9,12 +9,10 @@ const Op = Sequelize.Op;
 
 module.exports = function (app) {
 
-    //Get all the open activities 
-    app.get('/activity', function (req, res) {
-        db.activities.findAll({ where: { active: '0' } }).then(function (dbActivities) {
-
+    //The api route returns all open meetups
+    app.get('/meetups', function (req, res) {
+        db.activities.findAll({ where: { active: 1,  actType: 'meetup'} }).then(function (dbActivities) {
             console.log(dbActivities);
-
             res.json(dbActivities)
         })
     });
@@ -113,16 +111,17 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
+    //app.get('/updactivity/:id', function (req, res) {
     app.get('/updactivity/:id', function (req, res) {
         /*  if (req.isAuthenticated()) { */
-        console.log("The user is authenticated");
-        var id = req.params.id;
-        //pass each activity via an id
-        //this object will contain all the data we want to display on update activity page
+        console.log("Inside updactivity  -  The user is authenticated");
+        var activId = req.params.id; //retrieve the parameter which is activityId
+    
+        //The object will contain all the data we want to display on update activity page
         //we will create one big object containg two arrays of objects:
         //first includes all the activity data plus all participating users, and another 
         //includes the users who was not invited yet
-        var addedUsers = [];
+        //var addedUsers = [];
         var hbsCurrentUsers = {
             activityUsers: [],
             allUsers: []
@@ -131,7 +130,7 @@ module.exports = function (app) {
         //in the first call we want to get the activity with the corresponding id 
         //and all the users participating in the activity
         db.activities.findAll({
-            where: { id: id },
+            where: { id: activId },
             include: [{ model: db.users, as: "users" }]
         }).then(function (dbActivity) {
 
