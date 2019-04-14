@@ -1,5 +1,4 @@
 var db = require("../models");
-var passport = require('passport');
 
 console.log("Activity Route file");
 
@@ -44,7 +43,7 @@ module.exports = function (app) {
 
                 db.users.findOne({
                     where: { id: usId },
-                    include: [{ model: db.activities, as: "activities" }]
+                    include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
                 }).then(function (dbUser) {
 
                     // //Returns a JSON obj 
@@ -60,6 +59,10 @@ module.exports = function (app) {
                             activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
                         };
                     };
+                    var skills = [];
+                    for (var i = 0; i < user.skills.length; i++) {
+                        skills.push(user.skills[i].dataValues)
+                    };
 
                     var userInfo = {
                         firstName: user.firstName,
@@ -71,7 +74,8 @@ module.exports = function (app) {
                         active: user.active,
                         photoLink: user.photoLink,
                         myActivities: activities,
-                        allActivities: allActArr
+                        allActivities: allActArr,
+                        skills: skills
                     };
 
                     // console.log(activities[0])
@@ -80,11 +84,24 @@ module.exports = function (app) {
                 });
             });
         } else {
-            console.log("auth", req.isAuthenticated())
+            // console.log("auth", req.isAuthenticated())
             res.redirect("/")
         };
     });
 
+    app.put("/updateinterest", function (req, res) {
+        db.usersActivities.update(
+            {
+                interested: req.body.interested
+            }, {
+                where: {
+                    userId: req.session.passport.user.id,
+                    activityId: req.body.activityId
+                }
+            }).then(function (data) {
+                res.redirect("/dashboard")
+            })
+    });
     //*****SAM END******************************************//
 
     //******HALINA PART 2 BEGIN*****************************//
@@ -114,6 +131,31 @@ module.exports = function (app) {
     //the get request for adding a new activity page
     //app.get('/updactivity/:id', function (req, res) {
     app.get('/updactivity/:id', function (req, res) {
+<<<<<<< HEAD
+
+        if (req.isAuthenticated()) {
+
+            var id = req.params.id;
+
+            //pass each activity via an id
+            //this object will contain all the data we want to display on update activity page
+            //we will create one big object containg two arrays of objects:
+            //first includes all the activity data plus all participating users, and another 
+            //includes the users who was not invited yet
+            var addedUsers = [];
+            var hbsCurrentUsers = {
+                activityUsers: [],
+                allUsers: []
+            };
+
+            //in the first call we want to get the activity with the corresponding id 
+            //and all the users participating in the activity
+            db.activities.findAll({
+                where: { id: id },
+                include: [{ model: db.users, as: "users" }]
+            }).then(function (dbActivity) {
+                console.log("Found Activity")
+=======
         if (req.isAuthenticated()) {
             console.log("Inside updactivity  -  The user is authenticated");
             var activId = req.params.id; //retrieve the parameter which is activityId
@@ -135,6 +177,7 @@ module.exports = function (app) {
                 include: [{ model: db.users, as: "users" }]
             }).then(function (dbActivity) {
 
+>>>>>>> 402f60f8d6313c617831681e404c1bb4d7e3ae2b
                 //we constract the first part of the complex object 
                 hbsCurrentUsers.activityUsers = dbActivity;
 
@@ -142,6 +185,39 @@ module.exports = function (app) {
                 //using notIN clause of sequelize ORM 
                 var addedUsers = dbActivity[0].users;
                 var addeduserIds = [];  //the array contains ids of the invited users
+<<<<<<< HEAD
+
+                for (var i = 0; i < addedUsers.length; i++) {
+                    addeduserIds.push(addedUsers[i].id);
+                }
+
+                //filtering out the user already were invited
+                db.users.findAll({
+                    where: {
+                        id: { [Op.notIn]: addeduserIds }
+                    }
+                }).then(function (dbUsers) {
+                    //var all = dbUsers;
+
+                    console.log("Found user with Activity")
+
+                    hbsCurrentUsers.allUsers = dbUsers;
+                    //res.json(hbsCurrentUsers);  //this line was used for testing
+                    //render update activity page and send the object containg two arrays of objects:
+                    //first including all the activity data and all participationg users, and another 
+                    //to include all the users who were not invited
+                    res.render("updactivity");
+                })
+
+
+            });
+        }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        };
+    });
+=======
                 for (var i = 0; i < addedUsers.length; i++) {
                     addeduserIds.push(addedUsers[i].id);
                 }
@@ -171,6 +247,7 @@ module.exports = function (app) {
     });
 
 
+>>>>>>> 402f60f8d6313c617831681e404c1bb4d7e3ae2b
 
     //Add a new Project / Meetup  
     app.post('/addactivity', function (req, res) {

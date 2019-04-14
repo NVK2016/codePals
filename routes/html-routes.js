@@ -19,13 +19,13 @@ module.exports = function (app) {
 
     //Welcome page 
     app.get("/", function (req, res) {
-        console.log("Welcome page ", res);
+        // console.log("Welcome page ", res);
         res.render("index");
     });
 
     //Login page 
     app.get("/login", function (req, res) {
-        console.log("Welcome exisiting user logging into system", res);
+        // console.log("Welcome exisiting user logging into system", res);
         //Render the index handle bar 
         res.render("auth", res);
     });
