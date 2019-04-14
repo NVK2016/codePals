@@ -56,10 +56,10 @@ module.exports = function (app) {
                         console.log(user.activities)
                         for (var i = 0; i < user.activities.length; i++) {
 
-                            if (user.activities[i].dataValues.actType === 'project') {
+                            // if (user.activities[i].dataValues.actType === 'project') {
                             activities.push(user.activities[i].dataValues);
                             activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
-                            };
+                            // };
                         };
 
                         var skills = [];
