@@ -1,5 +1,4 @@
 var db = require("../models");
-var passport = require('passport');
 
 console.log("Activity Route file");
 
@@ -46,7 +45,7 @@ module.exports = function (app) {
 
                 db.users.findOne({
                     where: { id: usId },
-                    include: [{ model: db.activities, as: "activities" }, {model: db.skills, as: "skills"}]
+                    include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
                 }).then(function (dbUser) {
 
                     // //Returns a JSON obj 
@@ -62,7 +61,7 @@ module.exports = function (app) {
                         };
                     };
                     var skills = [];
-                    for(var i = 0; i< user.skills.length; i++){
+                    for (var i = 0; i < user.skills.length; i++) {
                         skills.push(user.skills[i].dataValues)
                     };
 
@@ -91,6 +90,19 @@ module.exports = function (app) {
         };
     });
 
+    app.put("/updateinterest", function (req, res) {
+        db.usersActivities.update(
+            {
+                interested: req.body.interested
+            }, {
+                where: {
+                    userId: req.session.passport.user.id,
+                    activityId: req.body.activityId
+                }
+            }).then(function (data) {
+                res.redirect("/dashboard")
+            })
+    });
     //*****SAM END******************************************//
 
     //******HALINA PART 2 BEGIN*****************************//
@@ -118,67 +130,67 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
-    app.get('/updactivity', function (req, res) {
-        /*  if (req.isAuthenticated()) { */
+    app.get('/updactivity/:id', function (req, res) {
 
-        console.log("Req Body:" , req.body)    
-        
-        // var id = req.params.id;
-        
-        //pass each activity via an id
-        //this object will contain all the data we want to display on update activity page
-        //we will create one big object containg two arrays of objects:
-        //first includes all the activity data plus all participating users, and another 
-        //includes the users who was not invited yet
-        var addedUsers = [];
-        var hbsCurrentUsers = {
-            activityUsers: [],
-            allUsers: []
-        };
+        if (req.isAuthenticated()) {
 
-        //in the first call we want to get the activity with the corresponding id 
-        //and all the users participating in the activity
-        db.activities.findAll({
-            where: { id: req.body.activityId},
-            include: [{ model: db.users, as: "users" }]
-        }).then(function (dbActivity) {
+            var id = req.params.id;
 
-            //we constract the first part of the complex object 
-            hbsCurrentUsers.activityUsers = dbActivity;
+            //pass each activity via an id
+            //this object will contain all the data we want to display on update activity page
+            //we will create one big object containg two arrays of objects:
+            //first includes all the activity data plus all participating users, and another 
+            //includes the users who was not invited yet
+            var addedUsers = [];
+            var hbsCurrentUsers = {
+                activityUsers: [],
+                allUsers: []
+            };
 
-            //this array will be used below to filter the users who were not invited
-            //using notIN clause of sequelize ORM 
-            var addedUsers = dbActivity[0].users;
-            var addeduserIds = [];  //the array contains ids of the invited users
-            
-            // for (var i = 0; i < addedUsers.length; i++) {
-            //     addeduserIds.push(addedUsers[i].id);
-            // }
+            //in the first call we want to get the activity with the corresponding id 
+            //and all the users participating in the activity
+            db.activities.findAll({
+                where: { id: id },
+                include: [{ model: db.users, as: "users" }]
+            }).then(function (dbActivity) {
+                console.log("Found Activity")
+                //we constract the first part of the complex object 
+                hbsCurrentUsers.activityUsers = dbActivity;
 
-            //filtering out the user already were invited
-            db.users.findAll({
-                where: {
-                    id: { [Op.notIn]: addeduserIds }
+                //this array will be used below to filter the users who were not invited
+                //using notIN clause of sequelize ORM 
+                var addedUsers = dbActivity[0].users;
+                var addeduserIds = [];  //the array contains ids of the invited users
+
+                for (var i = 0; i < addedUsers.length; i++) {
+                    addeduserIds.push(addedUsers[i].id);
                 }
-            }).then(function (dbUsers) {
-                //var all = dbUsers;
 
-                hbsCurrentUsers.allUsers = dbUsers;
-                //res.json(hbsCurrentUsers);  //this line was used for testing
-                //render update activity page and send the object containg two arrays of objects:
-                //first including all the activity data and all participationg users, and another 
-                //to include all the users who were not invited
-                res.render("updactivity", hbsCurrentUsers);
-            })
+                //filtering out the user already were invited
+                db.users.findAll({
+                    where: {
+                        id: { [Op.notIn]: addeduserIds }
+                    }
+                }).then(function (dbUsers) {
+                    //var all = dbUsers;
 
-            /* }
-            else {
-                //if the user is not authenticated, redirect him to the home page
-                console.log("auth", req.isAuthenticated());
-                res.redirect("/");
-            } */
-        });
+                    console.log("Found user with Activity")
 
+                    hbsCurrentUsers.allUsers = dbUsers;
+                    //res.json(hbsCurrentUsers);  //this line was used for testing
+                    //render update activity page and send the object containg two arrays of objects:
+                    //first including all the activity data and all participationg users, and another 
+                    //to include all the users who were not invited
+                    res.render("updactivity");
+                })
+
+
+            });
+        }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        };
     });
 
     //Add a new Project / Meetup  
