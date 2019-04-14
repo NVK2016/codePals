@@ -40,7 +40,7 @@ module.exports = function (app) {
 
                 db.users.findOne({
                     where: { id: usId },
-                    include: [{ model: db.activities, as: "activities" }]
+                    include: [{ model: db.activities, as: "activities" }, {model: db.skills, as: "skills"}]
                 }).then(function (dbUser) {
 
                     // //Returns a JSON obj 
@@ -54,6 +54,10 @@ module.exports = function (app) {
                         activities.push(user.activities[i].dataValues);
                         activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)};
                     };
+                    var skills = [];
+                    for(var i = 0; i< user.skills.length; i++){
+                        skills.push(user.skills[i].dataValues)
+                    };
 
                     var userInfo = {
                         firstName: user.firstName,
@@ -65,7 +69,8 @@ module.exports = function (app) {
                         active: user.active,
                         photoLink: user.photoLink,
                         myActivities: activities,
-                        allActivities: allActArr
+                        allActivities: allActArr,
+                        skills: skills
                     };
 
                     // console.log(activities[0])

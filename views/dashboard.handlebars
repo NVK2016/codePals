@@ -64,7 +64,17 @@
 </nav> --}}
 
 <div class="container">
-    <h1>Welcome {{firstName}} {{lastName}}</h1>
+    <div>
+        <h1>Welcome {{firstName}} {{lastName}}</h1> You know: 
+        {{#each skills}}
+        <span class="badge badge-warning">{{skill}}</span>
+        {{/each}}
+    </div>
+    
+    
+
+
+
     <div class="card-body">
 
         <div class="card-header" style="color:rgb(19, 235, 152);">
