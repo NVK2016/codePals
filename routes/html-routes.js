@@ -25,6 +25,9 @@ module.exports = function (app) {
 
     //Login page 
     app.get("/login", function (req, res) {
+        if (req.isAuthenticated()){
+            return res.redirect("/dashboard")
+        };
         // console.log("Welcome exisiting user logging into system", res);
         //Render the index handle bar 
         res.render("auth", res);
@@ -32,8 +35,9 @@ module.exports = function (app) {
 
     //Sigin Up page 
     app.get("/signup", function (req, res) {
-
-
+        if (req.isAuthenticated()){
+            return res.redirect("/dashboard")
+        };
         console.log("HTML get singup url ");
         //Render the index handle bar 
         res.render("signup", res);
