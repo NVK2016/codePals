@@ -43,7 +43,7 @@ module.exports = function (app) {
 
                 db.users.findOne({
                     where: { id: usId },
-                    include: [{ model: db.activities, as: "activities", where: { actType: "project" } }, { model: db.skills, as: "skills" }]
+                    include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
                 }).then(function (dbUser) {
 
                     // //Returns a JSON obj 
@@ -56,39 +56,33 @@ module.exports = function (app) {
                         console.log(user.activities)
                         for (var i = 0; i < user.activities.length; i++) {
 
-                            // if (user.activities[i].dataValues.actType === 'project') {
+                            if (user.activities[i].dataValues.actType === 'project') {
                             activities.push(user.activities[i].dataValues);
                             activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
-                            // };
+                            };
                         };
 
                         var skills = [];
                         for (var i = 0; i < user.skills.length; i++) {
                             skills.push(user.skills[i].dataValues)
                         };
-
-                        var userInfo = {
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            email: user.email,
-                            phone: user.phone,
-                            city: user.city,
-                            state: user.state,
-                            active: user.active,
-                            photoLink: user.photoLink,
-                            myActivities: activities,
-                            allActivities: allActArr,
-                            skills: skills
-                        };
-
-                        // console.log(activities[0])
-                        res.render("dashboard", userInfo)
                     }
-                    else {
-                        res.render("dashboard")
+                    var userInfo = {
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        email: user.email,
+                        phone: user.phone,
+                        city: user.city,
+                        state: user.state,
+                        active: user.active,
+                        photoLink: user.photoLink,
+                        myActivities: activities,
+                        allActivities: allActArr,
+                        skills: skills
+                    };
 
-                    }
-
+                    // console.log(activities[0])
+                    res.render("dashboard", userInfo)
                 });
             });
         } else {
