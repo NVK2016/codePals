@@ -41,7 +41,7 @@
                 <label for="title" class="required">Project Title:</label>
             </div>
             <div class="col-5">
-                <textarea class="form-control" id="title" rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
+                <textarea class="form-control" {{#each activityUsers}}data-activityId={{id}}{{/each}} id="title" rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
             </div>
         </div>
 
@@ -68,28 +68,18 @@
 
         <div class="row my-2">
             <div class="col-2">
-                <label for="actType">Activity Type:</label>
-            </div>
-            <div class="col-10">
-                <textarea class="form-control" rows="1" id="actType"
-                    placeholder="project or meetup">{{#each activityUsers}}{{actType}}{{/each}}</textarea>
-            </div>
-        </div>
-
-        <div class="row my-2">
-            <div class="col-2">
                 <label for="status">Activity Type:</label>
             </div>
             <div class="col-10">
                <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="radioActType" id="projRadio"
+                        <input type="radio" class="form-check-input" name="radioActType" id="projectRadio"
                             {{#each activityUsers}} {{renderProjectType actType}} {{/each}}>Project
                     </label>
                 </div>
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="radioActType" id="meetupRadio"
+                        <input type="radio" class="form-check-input" name="radioActType" id="meetRadio"
                             {{#each activityUsers}}{{renderProjectTypeMeet actType}} {{/each}}>Meetup
                     </label>
                 </div>
@@ -166,11 +156,11 @@
         $(".chzn-select").chosen();
     });
 
-    exphbs.registerHelper("renderProjectType", function (value, options) {
+   {{!--  exphbs.registerHelper("renderProjectType", function (value, options) {
         console.log("inside helper");
         if (value === "project")
             return true;
         else return false;
-    });
+    }); --}}
 
 </script>

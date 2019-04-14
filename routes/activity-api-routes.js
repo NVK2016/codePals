@@ -8,12 +8,10 @@ const Op = Sequelize.Op;
 
 module.exports = function (app) {
 
-    //Get all the open activities 
-    app.get('/activity', function (req, res) {
-        db.activities.findAll({ where: { active: '0' } }).then(function (dbActivities) {
-
+    //The api route returns all open meetups
+    app.get('/meetups', function (req, res) {
+        db.activities.findAll({ where: { active: 1, actType: 'meetup' } }).then(function (dbActivities) {
             console.log(dbActivities);
-
             res.json(dbActivities)
         })
     });
@@ -54,6 +52,7 @@ module.exports = function (app) {
                     var user = dbUser.dataValues
 
                     var activities = [];
+                    console.log("count activities: " + user.activities);
                     for (var i = 0; i < user.activities.length; i++) {
                         if (user.activities[i].dataValues.actType === 'project') {
                             activities.push(user.activities[i].dataValues);
@@ -130,7 +129,9 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
+    //app.get('/updactivity/:id', function (req, res) {
     app.get('/updactivity/:id', function (req, res) {
+<<<<<<< HEAD
 
         if (req.isAuthenticated()) {
 
@@ -154,6 +155,29 @@ module.exports = function (app) {
                 include: [{ model: db.users, as: "users" }]
             }).then(function (dbActivity) {
                 console.log("Found Activity")
+=======
+        if (req.isAuthenticated()) {
+            console.log("Inside updactivity  -  The user is authenticated");
+            var activId = req.params.id; //retrieve the parameter which is activityId
+
+            //The object will contain all the data we want to display on update activity page
+            //we will create one big object containg two arrays of objects:
+            //first includes all the activity data plus all participating users, and another 
+            //includes the users who was not invited yet
+            var addedUsers = [];
+            var hbsCurrentUsers = {
+                activityUsers: [],
+                allUsers: []
+            };
+
+            //in the first call we want to get the activity with the corresponding id 
+            //and all the users participating in the activity
+            db.activities.findAll({
+                where: { id: activId },
+                include: [{ model: db.users, as: "users" }]
+            }).then(function (dbActivity) {
+
+>>>>>>> 402f60f8d6313c617831681e404c1bb4d7e3ae2b
                 //we constract the first part of the complex object 
                 hbsCurrentUsers.activityUsers = dbActivity;
 
@@ -161,6 +185,7 @@ module.exports = function (app) {
                 //using notIN clause of sequelize ORM 
                 var addedUsers = dbActivity[0].users;
                 var addeduserIds = [];  //the array contains ids of the invited users
+<<<<<<< HEAD
 
                 for (var i = 0; i < addedUsers.length; i++) {
                     addeduserIds.push(addedUsers[i].id);
@@ -192,6 +217,37 @@ module.exports = function (app) {
             res.redirect("/");
         };
     });
+=======
+                for (var i = 0; i < addedUsers.length; i++) {
+                    addeduserIds.push(addedUsers[i].id);
+                }
+
+                //filtering out the user already were invited
+                db.users.findAll({
+                    where: {
+                        id: { [Op.notIn]: addeduserIds }
+                    }
+                }).then(function (dbUsers) {
+                    //var all = dbUsers;
+
+                    hbsCurrentUsers.allUsers = dbUsers;
+                    //res.json(hbsCurrentUsers);  //this line was used for testing
+                    //render update activity page and send the object containg two arrays of objects:
+                    //first including all the activity data and all participationg users, and another 
+                    //to include all the users who were not invited
+                    res.render("updactivity", hbsCurrentUsers);
+                })
+            })
+        }
+        else {
+            //if the user is not authenticated, redirect him to the home page
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        }
+    });
+
+
+>>>>>>> 402f60f8d6313c617831681e404c1bb4d7e3ae2b
 
     //Add a new Project / Meetup  
     app.post('/addactivity', function (req, res) {
@@ -204,13 +260,12 @@ module.exports = function (app) {
             console.log(req.body.activity);
             var obj = JSON.parse(req.body.activity); //getting an object from json 
             console.log(obj);
-            //var leaderId = passedActivity.adminId;   //will use if passport works!!!!!!
+            //we use userid stored in the session as an adminId
             var leaderId = usId; // will have to grab it from req
             //pass new values to the activities table model to create a new record
             //in the activities table and in the same transaction to add multiple records to the join usersActivities table
 
             var arrayIds = obj["participantsIds"];
-            //hardcoding adminId until passport is working
 
             console.log('Creating a new activity!');
             db.activities.create({
@@ -263,11 +318,76 @@ module.exports = function (app) {
         }
     });
 
-    //Updates the activity with the member values 
+    //PUT route for updating activity
     app.put('/updactivity', function (req, res) {
 
-    });
+        if (req.isAuthenticated()) {
+            console.log("The user is authenticated");
+            /*   console.log(req.session.passport.user);
+              var usId = req.session.passport.user.id; */
 
+            console.log(req.body.activity);
+            var obj = JSON.parse(req.body.activity); //getting an object from json 
+            console.log(obj);
+
+            //the array with newly selected users will be needed 
+            //when we do bulkInsert to the join usersActivities table
+            var arrayIds = obj["participantsIds"];
+
+            console.log('Updating an activity!');
+            db.activities.update(
+                {
+                    title: obj.title,
+                    description: obj.description,
+                    location: obj.location,
+                    estimateStartDate: obj.estimateStartDate,
+                    actType: obj.actType,
+                    active: obj.active
+                },
+                {
+                    where: {
+                        //id: req.body.id
+                        id: obj.activityId
+                    }
+                }).
+                then(function (dbActivity) {
+
+                    //the array will hold objects representing usersActivities table
+                    var newInvited = [];
+
+                    //create the corresponding usersActivities objects based on the ids in the arrayIds
+                    for (var i = 0; i < arrayIds.length; i++) {
+                        var inviteeObj = {
+                            userId: parseInt(arrayIds[i]),
+                            activityId: obj.activityId,
+                            interested: false
+                        };
+                        newInvited.push(inviteeObj);
+                    }
+                    //CODE FOR BULK INSERT
+                    //do bulk insert here to add new users to the join userActivity table
+                    //insert multiple records from the array to the usersActivities table
+                    db.usersActivities.bulkCreate(newInvited, {
+                        returning: true
+                    }).then(function (dbUsersActivities) {
+                        console.log("Activity updated: " + dbUsersActivities.dataValues);
+                        res.json(dbUsersActivities);
+                        //res.redirect("/dashboard");  //REDIRECT WHEN TESTED
+                        //will have to redirect to a dashboard for the user
+                    })
+                        .catch(function (err) {
+                            console.log(err);
+                            res.json(error);
+                        });
+
+                    //res.redirect("/dashboard");
+                });
+        }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        }
+    });
 };
 
 //******HALINA PART 2 END*****************************//
