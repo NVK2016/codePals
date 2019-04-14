@@ -41,7 +41,7 @@
                 <label for="title" class="required">Project Title:</label>
             </div>
             <div class="col-5">
-                <textarea class="form-control" id="title" rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
+                <textarea class="form-control" {{#each activityUsers}}data-activityId={{id}}{{/each}} id="title" rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
             </div>
         </div>
 

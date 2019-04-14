@@ -115,14 +115,21 @@ $(document).ready(function () {
             openActInput = false;
         }
 
+        var palsInput = $("#selectCodePals").chosen().val();
+
          //create and fill out the array with new invited users
          var particIds = [];
-         for (var i = 0; i < selectCodePals.length; i++) {
-             particIds.push(selectCodePals[i].charAt(0));
+         if(!(palsInput == null)) {
+            for (var i = 0; i < palsInput.length; i++) {
+                particIds.push(palsInput[i].charAt(0));
+            }
          }
+         
 
-        //CHANGE IS NEEDED
-        activityId = 25;  //Next to pass userID 
+        //Retrieve activityId from data attribute of the title text area on the form
+        var activityId =  $("#title").attr("data-activityId");
+        console.log("ActivityId to update: " + activityId);
+        //activityId = 25; //for testing
 
         // Constructing a updateActivity object to hand to the database
         var updatedActivity = {
@@ -132,7 +139,6 @@ $(document).ready(function () {
             estimateStartDate: $("#tentStartDate").val().trim(),
             actType: actTypeInput,
             active: openActInput,
-            //Take from query 
             activityId: activityId,
             participantsIds: particIds,
         };
@@ -152,7 +158,7 @@ $(document).ready(function () {
         })
             .done(function (result) {
                 console.log("The activity was updated!")
-                window.location.href = "./dashboard";
+                window.location.href = "/dashboard";
             })
             .fail(function () {
                 console.log("There was an error when updating an activity");
