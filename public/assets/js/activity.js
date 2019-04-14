@@ -115,7 +115,13 @@ $(document).ready(function () {
             openActInput = false;
         }
 
+         //create and fill out the array with new invited users
+         var particIds = [];
+         for (var i = 0; i < selectCodePals.length; i++) {
+             particIds.push(selectCodePals[i].charAt(0));
+         }
 
+        //CHANGE IS NEEDED
         activityId = 25;  //Next to pass userID 
 
         // Constructing a updateActivity object to hand to the database
@@ -127,7 +133,8 @@ $(document).ready(function () {
             actType: actTypeInput,
             active: openActInput,
             //Take from query 
-            activityId: activityId
+            activityId: activityId,
+            participantsIds: particIds,
         };
 
         //call addActivity function 

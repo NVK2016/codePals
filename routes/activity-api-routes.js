@@ -251,12 +251,10 @@ module.exports = function (app) {
         console.log(req.body.activity);
         var obj = JSON.parse(req.body.activity); //getting an object from json 
         console.log(obj);
-        //we use userid stored in the session as an adminId
-        //var leaderId = usId; // will have to grab it from req
-        //pass new values to the activities table model to create a new record
-        //in the activities table and in the same transaction to add multiple records to the join usersActivities table
 
-        //var arrayIds = obj["participantsIds"];
+        //the array with newly selected users will be needed 
+        //when we do bulkInsert to the join usersActivities table
+        var arrayIds = obj["participantsIds"];
 
         console.log('Updating an activity!');
         db.activities.update(
@@ -276,6 +274,20 @@ module.exports = function (app) {
             }).
             then(function (dbActivity) {
 
+                //the array will hold objects representing usersActivities table
+                var newInvited = [];
+
+                //create the corresponding usersActivities objects based on the ids in the arrayIds
+                for (var i = 0; i < arrayIds.length; i++) {
+                    var inviteeObj = {
+                        userId: parseInt(arrayIds[i]),
+                        //activityId: dbActivity.dataValues.id, //NEED TO KNOW ACTIVITY ID
+                        interested: false
+                    };
+                    newInvited.push(inviteeObj);
+                }
+
+                //CODE FOR BULK INSERT GOES BELOW
                 //do bulk insert here to add new users to the join userActivity table
                 console.log("Updated activities table");
                 res.redirect("/dashboard");
@@ -287,7 +299,7 @@ module.exports = function (app) {
             console.log("auth", req.isAuthenticated());
             res.redirect("/");
         } */
-       
+
     });
 };
 
