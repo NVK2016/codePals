@@ -1,21 +1,21 @@
 
 //Ready Event occurs when all the DOM elements are loaded 
 $(document).ready(function () {
-    console.log("Inside Client Side Activity JS file");    
+    console.log("Inside Client Side Activity JS file");
 
 
     //add an event listener for the Add Activity button on the addactivity page
     $("#addActButton").on("click", function () {
         event.preventDefault();
-        
+
         //read the radio buttons to set up activity type property
-       var actTypeInput;
-       if ($("#projRadio").is(':checked')) {
-           actTypeInput = "project";
-       }
-       else if ($("#meetupRadio").is(':checked')) {
-           actTypeInput = "meetup";
-       }
+        var actTypeInput;
+        if ($("#projRadio").is(':checked')) {
+            actTypeInput = "project";
+        }
+        else if ($("#meetupRadio").is(':checked')) {
+            actTypeInput = "meetup";
+        }
 
 
         console.log("inside on button click event");
@@ -92,33 +92,79 @@ $(document).ready(function () {
     });
 
     //Update Activity when the submits data expect for the name  
-    $("#btn_update").on("click", function () {
+    $("#updActButton").on("click", function () {
 
+        event.preventDefault();
         // console.log($("#fname").val(), $("#lname").val());
-        activityId = 2;  //Next to pass userID 
+
+        //read the radio buttons to set up activity type property
+        var actTypeInput;
+        if ($("#projectRadio").is(':checked')) {
+            actTypeInput = "project";
+        }
+        else if ($("#meetRadio").is(':checked')) {
+            actTypeInput = "meetup";
+        }
+
+        //read the radio buttons to check if the activity is open or not
+        var openActInput;
+        if ($("#activeRadio").is(':checked')) {
+            openActInput = true;
+        }
+        else if ($("#inactiveRadio").is(':checked')) {
+            openActInput = false;
+        }
+
+        var palsInput = $("#selectCodePals").chosen().val();
+
+         //create and fill out the array with new invited users
+         var particIds = [];
+         if(!(palsInput == null)) {
+            for (var i = 0; i < palsInput.length; i++) {
+                particIds.push(palsInput[i].charAt(0));
+            }
+         }
+         
+
+        //Retrieve activityId from data attribute of the title text area on the form
+        var activityId =  $("#title").attr("data-activityId");
+        console.log("ActivityId to update: " + activityId);
+        //activityId = 25; //for testing
 
         // Constructing a updateActivity object to hand to the database
-        var updateActivity = {
+        var updatedActivity = {
+            title: $("#title").val().trim(),
             location: $("#location").val().trim(),
             description: $("#description").val().trim(),
             estimateStartDate: $("#tentStartDate").val().trim(),
-            actType: $("#actType").val().trim(),
-            active: $("#active").val().trim(),
-            //Take from query 
-            activityId: activityId
+            actType: actTypeInput,
+            active: openActInput,
+            activityId: activityId,
+            participantsIds: particIds,
         };
 
-        // console.log("Data", updateUser); 
-        //Pass the api route path for performing the database changes 
-        $.ajax({
-            method: "PUT",
-            url: "/updactivity",
-            data: updateActivity
-        })
-            .done(function () {
-                //Need to change it to dashboard 
-                window.location.href = "/login";
-            });
+        //call addActivity function 
+        updateActivity(updatedActivity);
     });
 
-});
+    function updateActivity(activity) {
+        console.log(window.location.href);
+
+        $.ajax({
+            url: "/updactivity",
+            method: "PUT",
+            data: { activity: JSON.stringify(activity) },
+            dataType: "json",
+        })
+            .done(function (result) {
+                console.log("The activity was updated!")
+                window.location.href = "/dashboard";
+            })
+            .fail(function () {
+                console.log("There was an error when updating an activity");
+            });
+    }
+
+});     
+
+
