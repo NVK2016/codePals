@@ -53,6 +53,7 @@ module.exports = function (app) {
                     var user = dbUser.dataValues
 
                     var activities = [];
+                    console.log("count activities: " + user.activities);
                     for (var i = 0; i < user.activities.length; i++) {
                         if (user.activities[i].dataValues.actType === 'project') {
                             activities.push(user.activities[i].dataValues);
