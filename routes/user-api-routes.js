@@ -20,28 +20,28 @@ console.log("User Route file");
 module.exports = function (app) {
 
   // Dashboard Route - Get Information for the Looged in User 
-    app.get("/dashboard", function (req, res) {
-        console.log("Navigate to dashboard");
-        //Render the dashboard html 
-        if (req.isAuthenticated()) {
-          console.log(true)
-          console.log(req.session.passport.user);
-          var usId = req.session.passport.user.id;
+    // app.get("/dashboard", function (req, res) {
+    //     console.log("Navigate to dashboard");
+    //     //Render the dashboard html 
+    //     if (req.isAuthenticated()) {
+    //       console.log(true)
+    //       console.log(req.session.passport.user);
+    //       var usId = req.session.passport.user.id;
 
-          db.users.findOne({
-              where: { id: usId },
-              include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
-          }).then(function (dbUser) {
+    //       db.users.findOne({
+    //           where: { id: usId },
+    //           include: [{ model: db.activities, as: "activities" }, { model: db.skills, as: "skills" }]
+    //       }).then(function (dbUser) {
 
-              //Returns a JSON obj and redirects to dashboard 
-              res.render("dashboard", dbUser);
+    //           //Returns a JSON obj and redirects to dashboard 
+    //           res.render("dashboard", dbUser);
 
-          });
-      } else {
-          console.log("auth", req.isAuthenticated())
-          res.redirect("/login")
-      }
-    });
+    //       });
+    //   } else {
+    //       console.log("auth", req.isAuthenticated())
+    //       res.redirect("/login")
+    //   }
+    // });
 
 
   //View All codePals in the database 

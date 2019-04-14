@@ -190,9 +190,10 @@
         $(".updateAct").on("click", function (event) {
             event.preventDefault();
             console.log("Update Clicked")
+            var data = { activityId: $(this).attr("data-activityId") }
             $.ajax("/updactivity", {
                 method: 'GET',
-                data: { activityId: $(this).attr("data-activityId") }
+                data: data
             }).then(function (response) {
                 console.log(response)
             })

@@ -23,7 +23,6 @@ var PORT = process.env.PORT || 8080;
 //use local-stratey defined in config folder
 require('./config/passport')(passport);
 
-
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -44,8 +43,27 @@ app.use(express.static("public"));
 // Set Handlebars.
 var exphbs = require("express-handlebars");
 
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+//We have to register two helper functions for updactivity.handlebars page to 
+//check the corresponding radiobuttons for activity type
+app.engine("handlebars", exphbs({
+  defaultLayout: "main",
+  helpers: {
+    renderProjectType: function (projType) {
+      if (projType === "project")
+        return "checked";
+      else return "";
+    },
+    renderProjectTypeMeet: function (projType) {
+      if (projType === "meetup")
+        return "checked";
+      else return "";
+    }
+  }
+}));
+
+
 app.set("view engine", "handlebars");
+
 
 //Using session
 app.use(session({
@@ -54,14 +72,14 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
-      expires: 600000,
-      httpOnly: false
+    expires: 600000,
+    httpOnly: false
   }
 }));
- 
+
 // Passport middleware
 app.use(passport.initialize());
-app.use(passport.session()); 
+app.use(passport.session());
 
 
 // Routes

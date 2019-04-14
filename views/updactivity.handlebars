@@ -1,18 +1,14 @@
 {{!-- Calling Client JS --}}
-{{!-- <script src="/assets/js/activity.js"></script> --}}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
-<link rel="stylesheet" href="../public/assets/css/style.css">
+{{!-- <link rel="stylesheet" href="../public/assets/css/style.css"> --}}
 <script src="../assets/js/activity.js"></script>
 </head>
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!--     <a class="navbar-brand" href="#">
-        <img src="../public/assets/img/codepals_logo-02_m.png">
-    </a> --}}
     <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
@@ -39,16 +35,14 @@
         </div>
     </div>
 
-    {{!--  <h2 class="mb-3 py-3" style="color: #E23B0F">Add Project/Meetup</h2> --}}
     <form id="activity-form">
         <div class="row my-2">
             <div class="col-2">
                 <label for="title" class="required">Project Title:</label>
             </div>
             <div class="col-5">
-                <input id="title" type="text" placeholder={{activity.title}}>
+                <textarea class="form-control" id="title" rows="1">{{#each activityUsers}}{{title}}{{/each}}</textarea>
             </div>
-
         </div>
 
         <div class="row my-2">
@@ -56,16 +50,19 @@
                 <label for="location">Location (City):</label>
             </div>
             <div class="col-10">
-                <input id="location" type="text" placeholder={{activity.location}}>
+                <textarea class="form-control" id="location"
+                    rows="1">{{#each activityUsers}}{{location}}{{/each}}</textarea>
             </div>
         </div>
+
 
         <div class="row my-2">
             <div class="col-2">
                 <label for="tentStartDate">Tentative Start Date:</label>
             </div>
             <div class="col-10">
-                <input type="text" id="tentStartDate" placeholder={{activity.estimateStartDate}} >
+                <textarea class="form-control" id="tentStartDate"
+                    rows="1">{{#each activityUsers}}{{estimateStartDate}}{{/each}}</textarea>
             </div>
         </div>
 
@@ -74,14 +71,26 @@
                 <label for="actType">Activity Type:</label>
             </div>
             <div class="col-10">
-                <div class="form-check-inline">
+                <textarea class="form-control" rows="1" id="actType"
+                    placeholder="project or meetup">{{#each activityUsers}}{{actType}}{{/each}}</textarea>
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="status">Activity Type:</label>
+            </div>
+            <div class="col-10">
+               <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio" id="projRadio" checked>Project
+                        <input type="radio" class="form-check-input" name="radioActType" id="projRadio"
+                            {{#each activityUsers}} {{renderProjectType actType}} {{/each}}>Project
                     </label>
                 </div>
                 <div class="form-check-inline">
                     <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="optradio" id="meetupRadio">Meetup
+                        <input type="radio" class="form-check-input" name="radioActType" id="meetupRadio"
+                            {{#each activityUsers}}{{renderProjectTypeMeet actType}} {{/each}}>Meetup
                     </label>
                 </div>
             </div>
@@ -92,18 +101,41 @@
                 <label for="description">Short Description:</label>
             </div>
             <div class="col-10">
-                <textarea class="form-control" rows="2" id="description" placeholder={{activity.description}} ></textarea>
+                <textarea class="form-control" rows="2"
+                    id="description">{{#each activityUsers}}{{description}}{{/each}}</textarea>
             </div>
         </div>
 
         <div class="row my-2">
             <div class="col-2">
-                <label for="description">Invited CodePals::</label>
+                <label for="status">Activity Status:</label>
             </div>
             <div class="col-10">
-                <ul>
-                    {{#each }}
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="radiostatus" id="activeRadio"
+                            {{#each activityUsers}} {{#if active}}checked{{/if}}{{/each}}>Active
+                    </label>
+                </div>
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" name="radiostatus" id="inactiveRadio"
+                            {{#each activityUsers}} {{#unless active}}checked{{/unless}}{{/each}}>Not Active
+                    </label>
+                </div>
+            </div>
+        </div>
 
+        <div class="row mt-3 mb-3">
+            <div class="col-2">
+                <label for="invitedAlready">Already Invited CodePals:</label>
+            </div>
+            <div class="col-10">
+                <ul id="invitedAlready" style="margin-left: -40px;">
+                    {{#each activityUsers}}
+                    {{#each users}}
+                    <span class="pr-3">{{firstName}} {{lastName}}</span>
+                    {{/each}}
                     {{/each}}
                 </ul>
             </div>
@@ -111,11 +143,11 @@
 
         <div class="row my-2">
             <div class="col-2">
-                <label for="selectCodePals">Invite codePals:</label>
+                <label for="selectCodePals">Invite More CodePals:</label>
             </div>
             <div class="col-10 my-2">
                 <select id="selectCodePals" class="form-control chzn-select" multiple="true">
-                    {{#each users}}
+                    {{#each allUsers}}
                     {{#if active}}
                     <option>{{id}}.{{firstName}} {{lastName}}</option>
                     {{/if}}
@@ -124,9 +156,7 @@
             </div>
         </div>
 
-
-        {{!--     <button class="btn-success" type="submit" id="btn_update"> Update</button> --}}
-        <button type="submit" id="addActButton" class="btn btn-success my-2" style="background: #0ba14b">Update
+        <button type="submit" id="updActButton" class="btn btn-success my-2" style="background: #0ba14b">Update
             Activity</button>
     </form>
 </div>
@@ -135,4 +165,12 @@
     $(function () {
         $(".chzn-select").chosen();
     });
+
+    exphbs.registerHelper("renderProjectType", function (value, options) {
+        console.log("inside helper");
+        if (value === "project")
+            return true;
+        else return false;
+    });
+
 </script>
