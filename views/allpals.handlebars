@@ -1,6 +1,6 @@
 {{!-- Calling Client JS --}}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  {{!--     <a class="navbar-brand" href="#">
+      {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
   <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
@@ -23,7 +23,7 @@
   <div class="card-body"></div>
 
     <div class="card-header">
-        <h3 class="text-success">All Members</h3>
+        <h3 >All Members</h3>
 
         <div class="row m-5">
           {{!-- Prints out Each user Info --}}
@@ -42,7 +42,7 @@
                   {{/each}}
                 </p>
                 <label>Email : <a href="mailto:"{{email}}>{{email}}</a></label>
-                <p><button class="button btn-warning" onclick="mailto:" {{email}}>Invite Member</button></p>
+                <p><button class="button btn-success" onclick="mailto:" {{email}}>Invite Member</button></p>
               </div>
                <br />
             </div>
