@@ -3,6 +3,7 @@
 $(document).ready(function () {
     console.log("Inside Client Side Activity JS file");    
 
+
     //add an event listener for the Add Activity button on the addactivity page
     $("#addActButton").on("click", function () {
         event.preventDefault();
@@ -19,6 +20,15 @@ $(document).ready(function () {
 
         console.log("inside on button click event");
 
+        //read the radio buttons to set up activity type property
+        var actTypeInput;
+        if ($("#projRadio").is(':checked')) {
+            actTypeInput = "project";
+        }
+        else if ($("#meetupRadio").is(':checked')) {
+            actTypeInput = "meetup";
+        }
+
         // Read the values from the corresponding form's controls 
         var titleInput = $("#title").val().trim();
         var locationInput = $("#location").val().trim();
@@ -26,13 +36,7 @@ $(document).ready(function () {
         var descriptionInput = $("#description").val().trim();
         var palsInput = $("#selectCodePals").chosen().val();
 
-        console.log(palsInput);
-        console.log(titleInput);
-        console.log(locationInput);
-        console.log(startDateInput);
-        console.log(descriptionInput);
-        console.log(actTypeInput);
-
+        //create and fill out the array with participant ids
         var particIds = [];
         for (var i = 0; i < palsInput.length; i++) {
             particIds.push(palsInput[i].charAt(0));
@@ -70,8 +74,6 @@ $(document).ready(function () {
             dataType: "json",
         })
             .done(function (result) {
-                //Need to change it to dashboard 
-                //window.location.href = "/login";
                 console.log("The new activity was added successfully!")
                 window.location.href = "./dashboard";
             })
@@ -80,15 +82,6 @@ $(document).ready(function () {
             });
     }
 
-    // Getting the information for any actitivty 
-    /*   getActivity(activityId);
-  
-      //
-      function getActivity(activityId) {
-          $.get("/dashboard?id=" + activityId, function (data) {
-              console.log("Activity", data);
-          });
-      } */
 
     //Edit the URL & Enable the form on Edit button click 
     $("#btn_updUser").on("click", function () {
@@ -126,5 +119,6 @@ $(document).ready(function () {
                 //Need to change it to dashboard 
                 window.location.href = "/login";
             });
-    })
+    });
+
 });

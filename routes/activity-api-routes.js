@@ -3,6 +3,10 @@ var passport = require('passport');
 
 console.log("Activity Route file");
 
+//we will use sequelize operators Op such as notIn for filtering
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
+
 module.exports = function (app) {
 
     //Get all the open activities 
@@ -15,7 +19,9 @@ module.exports = function (app) {
         })
     });
 
-    //we already have the dashboard route inside /api/user - how we should organize it?
+    //******HALINA PART 1 END*********************************//
+
+    //*****SAM BEGIN******************************************//
     //Get Activity Data for the logged in user 
     app.get('/dashboard', function (req, res) {
 
@@ -25,10 +31,10 @@ module.exports = function (app) {
             var usId = req.session.passport.user.id;
 
             db.activities.findAll({
-                where: { 
+                where: {
                     active: 1,
                     actType: "meetup"
-                 }
+                }
             }).then(function (allActivity) {
                 // console.log("All Activities: ", allActivity)
 
@@ -50,9 +56,10 @@ module.exports = function (app) {
 
                     var activities = [];
                     for (var i = 0; i < user.activities.length; i++) {
-                        if(user.activities[i].dataValues.actType === 'project'){
-                        activities.push(user.activities[i].dataValues);
-                        activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)};
+                        if (user.activities[i].dataValues.actType === 'project') {
+                            activities.push(user.activities[i].dataValues);
+                            activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
+                        };
                     };
 
                     var userInfo = {
@@ -79,22 +86,21 @@ module.exports = function (app) {
         };
     });
 
+    //*****SAM END******************************************//
 
-
-    //the get request for adding a new activity page
+    //******HALINA PART 2 BEGIN*****************************//
+    //The get request for adding a new activity page - it will render addactivity.handlebars page
     app.get('/addactivity', function (req, res) {
         if (req.isAuthenticated()) {
-            console.log("The user is authenticated");
-            //console.log(req.session.passport.user);
-            //var usId = req.session.passport.user.id;
+            console.log("The user is authenticated"); //we authenticated the user
 
+            //we will select all active current users to populate drop-down menu in our addactivity form
             db.users.findAll({ where: { active: 1 } }).then(function (dbUsers) {
-                console.log(dbUsers);
+                //console.log(dbUsers);
                 var hbsObject = {
                     users: dbUsers
                 };
-                console.log(hbsObject);
-                res.render("addactivity", hbsObject);
+                res.render("addactivity", hbsObject); //render the form
             })
         }
         else {
@@ -107,45 +113,63 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
-    app.get('/updactivity', function (req, res) {
+    app.get('/updactivity/:id', function (req, res) {
         /*  if (req.isAuthenticated()) { */
         console.log("The user is authenticated");
-        //console.log(req.session.passport.user);
-        //var usId = req.session.passport.user.id;
+        var id = req.params.id;
         //pass each activity via an id
+        //this object will contain all the data we want to display on update activity page
+        //we will create one big object containg two arrays of objects:
+        //first includes all the activity data plus all participating users, and another 
+        //includes the users who was not invited yet
+        var addedUsers = [];
+        var hbsCurrentUsers = {
+            activityUsers: [],
+            allUsers: []
+        };
+
+        //in the first call we want to get the activity with the corresponding id 
+        //and all the users participating in the activity
         db.activities.findAll({
-            where: { id: 15 },
+            where: { id: id },
             include: [{ model: db.users, as: "users" }]
         }).then(function (dbActivity) {
-            res.json(dbActivity);
-            //populate the handlebars object with the current users for the current activity
-            var hbsCurrentUsers = {
-                activityUsers: dbActivity
-            };
-        })
-            .then(function (dbActivity) {
-                res.json(dbActivity);
-                //populate the handlebars object with the current users for the current activity
-                var hbsCurrentUsers = {
-                    activityUsers: dbActivity
-                };
-            });
 
-        /*    db.users.findAll({ where: { active: 1 } }).then(function (dbUsers) {
-               console.log(dbUsers);
-               var hbsObject = {
-                   users: dbUsers
-               };
-               console.log(hbsObject);
-               res.render("addactivity", hbsObject);
-           })
-        */
-        /* }
-        else {
-            //if the user is not authenticated, redirect him to the home page
-            console.log("auth", req.isAuthenticated());
-            res.redirect("/");
-        } */
+            //we constract the first part of the complex object 
+            hbsCurrentUsers.activityUsers = dbActivity;
+
+            //this array will be used below to filter the users who were not invited
+            //using notIN clause of sequelize ORM 
+            var addedUsers = dbActivity[0].users;
+            var addeduserIds = [];  //the array contains ids of the invited users
+            for (var i = 0; i < addedUsers.length; i++) {
+                addeduserIds.push(addedUsers[i].id);
+            }
+
+            //filtering out the user already were invited
+            db.users.findAll({
+                where: {
+                    id: { [Op.notIn]: addeduserIds }
+                }
+            }).then(function (dbUsers) {
+                //var all = dbUsers;
+
+                hbsCurrentUsers.allUsers = dbUsers;
+                //res.json(hbsCurrentUsers);  //this line was used for testing
+                //render update activity page and send the object containg two arrays of objects:
+                //first including all the activity data and all participationg users, and another 
+                //to include all the users who were not invited
+                res.render("updactivity", hbsCurrentUsers);
+            })
+
+            /* }
+            else {
+                //if the user is not authenticated, redirect him to the home page
+                console.log("auth", req.isAuthenticated());
+                res.redirect("/");
+            } */
+        });
+
     });
 
     //Add a new Project / Meetup  
@@ -206,30 +230,17 @@ module.exports = function (app) {
                     res.json(dbUsersActivities);
                     //will have to redirect to a dashboard for the user
                 })
-
-
+                    .catch(function (err) {
+                        console.log(err);
+                        res.json(error);
+                    });
             })
         }
         else {
             console.log("auth", req.isAuthenticated());
             res.redirect("/");
         }
-
-
     });
-
-
-    app.put("/updateinterest", function(req, res){
-        db.usersActivities.update(
-            {interested:req.body.interested
-            },{
-            where:{
-                userId: req.session.passport.user.id,
-                activityId: req.body.activityId
-            }}).then(function(data){
-                res.redirect("/dashboard")
-            })
-    })
 
     //Updates the activity with the member values 
     app.put('/updactivity', function (req, res) {
@@ -238,3 +249,4 @@ module.exports = function (app) {
 
 };
 
+//******HALINA PART 2 END*****************************//
