@@ -6,9 +6,9 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!-- <a class="navbar-brand" href="#">
+        {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
-    </a>  --}}
+    </a> --}}
     <a class="navbar-brand" href="/dashboard" style="color: #E23B0F">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
@@ -18,8 +18,14 @@
             <li class="nav-item">
                 <a class="nav-link" href="/upduser">Update Profile</a>
             </li>
+
             <li class="nav-item">
-                <a class="nav-link" href="/login">Sign Out</a>
+                <a class="nav-link" id="headerLogo" href="/addactivity">
+                    Create New Activity</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Sign Out</a>
             </li>
         </ul>
     </div>
@@ -83,7 +89,7 @@
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Create Password"
-                    value={{passw}} tabindex="2" />
+                    value={{passw}} tabindex="2" disabled/>
             </div>
 
             <div class="form-group">
@@ -123,7 +129,7 @@
         </div>
 
 
-        <a href="/dashboard"></a><button class="btn-success" type="submit" id="btn-update">Update User</button></a>
+        <a href="/dashboard"><button class="btn-success" type="submit" id="btn-update">Update User</button></a>
 
     </div>
 </div>

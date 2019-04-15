@@ -46,7 +46,7 @@ module.exports = function (sequelize, DataTypes) {
     photoLink: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+      defaultValue: 'http://lorempixel.com/600/500/people'
     },
     passw: {
       type: DataTypes.STRING,
