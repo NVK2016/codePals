@@ -48,23 +48,25 @@ module.exports = function (app) {
 
                     // //Returns a JSON obj 
                     // res.json(dbUser);
+                    if (dbUser) {
+                        var user = dbUser.dataValues
 
-                    var user = dbUser.dataValues
+                        var activities = [];
 
-                    var activities = [];
+                        console.log(user.activities)
+                        for (var i = 0; i < user.activities.length; i++) {
 
-                    for (var i = 0; i < user.activities.length; i++) {
-                        console.log("user.activities[i].dataValues.actType: " + user.activities[i].dataValues.actType);
-                        if (user.activities[i].dataValues.actType === 'project') {
+                            // if (user.activities[i].dataValues.actType === 'project') {
                             activities.push(user.activities[i].dataValues);
                             activities[i].isMine = (user.activities[i].dataValues.adminId === user.id)
+                            // };
                         };
-                    };
-                    var skills = [];
-                    for (var i = 0; i < user.skills.length; i++) {
-                        skills.push(user.skills[i].dataValues)
-                    };
 
+                        var skills = [];
+                        for (var i = 0; i < user.skills.length; i++) {
+                            skills.push(user.skills[i].dataValues)
+                        };
+                    }
                     var userInfo = {
                         firstName: user.firstName,
                         lastName: user.lastName,
@@ -81,7 +83,6 @@ module.exports = function (app) {
 
                     // console.log(activities[0])
                     res.render("dashboard", userInfo)
-
                 });
             });
         } else {
@@ -130,63 +131,71 @@ module.exports = function (app) {
 
 
     //the get request for adding a new activity page
-    //app.get('/updactivity/:id', function (req, res) {
     app.get('/updactivity/:id', function (req, res) {
-        /*  if (req.isAuthenticated()) { */
-        console.log("Inside updactivity  -  The user is authenticated");
-        var activId = req.params.id; //retrieve the parameter which is activityId
-
-        //The object will contain all the data we want to display on update activity page
-        //we will create one big object containg two arrays of objects:
-        //first includes all the activity data plus all participating users, and another 
-        //includes the users who was not invited yet
-        var addedUsers = [];
-        var hbsCurrentUsers = {
-            activityUsers: [],
-            allUsers: []
-        };
-
         //in the first call we want to get the activity with the corresponding id 
         //and all the users participating in the activity
-        db.activities.findAll({
-            where: { id: activId },
-            include: [{ model: db.users, as: "users" }]
-        }).then(function (dbActivity) {
 
-            //we constract the first part of the complex object 
-            hbsCurrentUsers.activityUsers = dbActivity;
 
-            //this array will be used below to filter the users who were not invited
-            //using notIN clause of sequelize ORM 
-            var addedUsers = dbActivity[0].users;
-            var addeduserIds = [];  //the array contains ids of the invited users
+        if (req.isAuthenticated()) {
+            var activId = req.params.id; //retrieve the parameter which is activityId
 
-            for (var i = 0; i < addedUsers.length; i++) {
-                addeduserIds.push(addedUsers[i].id);
-            }
+            //The object will contain all the data we want to display on update activity page
+            //we will create one big object containg two arrays of objects:
+            //first includes all the activity data plus all participating users, and another 
+            //includes the users who was not invited yet
+            var addedUsers = [];
+            var hbsCurrentUsers = {
+                activityUsers: [],
+                allUsers: []
+            };
 
-            //filtering out the user already were invited
-            db.users.findAll({
-                where: {
-                    id: { [Op.notIn]: addeduserIds }
+            //in the first call we want to get the activity with the corresponding id 
+            //and all the users participating in the activity
+            db.activities.findAll({
+                where: { id: activId },
+                include: [{ model: db.users, as: "users" }]
+            }).then(function (dbActivity) {
+
+                //we constract the first part of the complex object 
+                hbsCurrentUsers.activityUsers = dbActivity;
+
+                //this array will be used below to filter the users who were not invited
+                //using notIN clause of sequelize ORM 
+                var addedUsers = dbActivity[0].users;
+                var addeduserIds = [];  //the array contains ids of the invited users
+
+                /*//this array will be used below to filter the users who were not invited
+                  //using notIN clause of sequelize ORM 
+                  var addedUsers = dbActivity[0].users;
+                  var addeduserIds = [];  //the array contains ids of the invited users */
+
+                  for (var i = 0; i < addedUsers.length; i++) {
+                    addeduserIds.push(addedUsers[i].id);
                 }
-            }).then(function (dbUsers) {
-                //var all = dbUsers;
 
-                hbsCurrentUsers.allUsers = dbUsers;
-                //res.json(hbsCurrentUsers);  //this line was used for testing
-                //render update activity page and send the object containg two arrays of objects:
-                //first including all the activity data and all participationg users, and another 
-                //to include all the users who were not invited
-                res.render("updactivity", hbsCurrentUsers);
-            })
-        })
-        /*  }
-         else {
-             //if the user is not authenticated, redirect him to the home page
-             console.log("auth", req.isAuthenticated());
-             res.redirect("/");
-         } */
+                //filtering out the user already were invited
+                db.users.findAll({
+                    where: {
+                        id: { [Op.notIn]: addeduserIds }
+                    }
+                }).then(function (dbUsers) {
+                    //var all = dbUsers;
+
+                    console.log("Found user with Activity")
+
+                    hbsCurrentUsers.allUsers = dbUsers;
+                    //res.json(hbsCurrentUsers);  //this line was used for testing
+                    //render update activity page and send the object containg two arrays of objects:
+                    //first including all the activity data and all participationg users, and another 
+                    //to include all the users who were not invited
+                    res.render("updactivity", hbsCurrentUsers);
+                })
+            });
+        }
+        else {
+            console.log("auth", req.isAuthenticated());
+            res.redirect("/");
+        };
     });
 
 
@@ -334,3 +343,9 @@ module.exports = function (app) {
 };
 
 //******HALINA PART 2 END*****************************//
+
+
+
+
+
+

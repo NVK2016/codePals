@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!--     <a class="navbar-brand" href="#">
+        {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
     <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
@@ -70,7 +70,7 @@
                                 </div>
                             </td>
                             {{#if isMine}}
-                            <td><button class="btn btn-primary updateAct" data-activityId={{id}}>Update</button></td>
+                            <td><a href="/updactivity/{{id}}"><button class="btn btn-primary updateAct" data-activityId={{id}}>Update</button></a></td>
                             {{/if}}
                         </tr>
 
