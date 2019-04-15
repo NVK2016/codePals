@@ -2,7 +2,7 @@
         {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
-    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -26,7 +26,7 @@
 
 <div class="container">
     <div>
-        <h1>Welcome {{firstName}} {{lastName}}</h1> You know: 
+        <h1>Welcome {{firstName}} {{lastName}}</h1> Skills: 
         {{#each skills}}
         <span class="badge badge-warning">{{skill}}</span>
         {{/each}}
@@ -40,7 +40,6 @@
 
         <div class="card-header" style="color:rgb(19, 235, 152);">
             <div class="col-sm">
-                <img src='./assets/images/dashImage.jpg' class="imgPort">
                 <h3>My Projects</h3>
                 <table class="table table-striped">
                     <thead>
@@ -84,7 +83,6 @@
 
         <div class="card-header mt-5" style="color:rgb(25, 136, 94);">
             <div class="col-sm">
-                <img src='./assets/images/dashImage.jpg' class="imgPort">
                 <h3>Available Meetups</h3>
                 <table class="table table-striped">
                     <thead>
