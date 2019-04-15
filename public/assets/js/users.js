@@ -7,7 +7,7 @@ $(document).ready(function () {
   //Update Profile when the submits data expect for the email address 
   $("#btn-update").on("click", function () {
 
-    alert("updating profile");
+    // alert("updating profile");
 
     // Constructing a updateProfile object to hand to the database
     var updateUser = {
@@ -34,7 +34,7 @@ $(document).ready(function () {
       .done(function (result) {
         //Need to change it to dashboard 
         console.log("Test Message", result);
-        window.location.href = "./dashboard";
+        // window.location.href = "./dashboard";
       })
       .fail(function (error) {
         console.log(error); 

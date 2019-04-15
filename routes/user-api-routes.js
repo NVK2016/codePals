@@ -242,7 +242,7 @@ module.exports = function (app) {
 
         console.log("Update data" , dbUser);
 
-        res.render("/upduser", dbUser)
+        // res.render("/upduser", dbUser)
       });
     } else {
       //Failed Auth then login again 

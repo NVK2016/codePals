@@ -6,10 +6,10 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        {{!-- <a class="navbar-brand" href="#">
+    {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a>  --}}
-    <a class="navbar-brand" href="#" style="color: #E23B0F">codePals</a>
+    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -28,21 +28,33 @@
 <div class="row mt-5">
     <div class="col-4 ml-5">
         <div class="card-body">
-                <form>
-                    <fieldset class="card-header">
-                        <legend class="scheduler-border">Add New Skill</legend>
-                        <label for="skill name" class="required"> Skill Name : </label>
-                        <input type="text" id="skillName">
-                        <br>
-                        <label for="skill type">Skill Type:</label>
-                        <input type="text" id="skillType" placeholder="Front-end or Back-End Skill"><br>
-                        </fields>
-                        <br />
-                        <button class="btn-success" type="submit" id="btn-newSkill">Add User Skill</button>
-                        <br />
-                    </fieldset>
-                </form>
-            </div>
+            <form>
+                <fieldset class="card-header">
+                    <legend class="scheduler-border">Add New Skill</legend>
+                    <label for="skill name" class="required"> Skill Name : </label>
+                    <input type="text" id="skillName">
+                    <br>
+
+
+                    {{!-- <label for="skill type">Skill Type:</label>
+                    <input type="text" id="skillType" placeholder="Front-end or Back-End Skill"><br> --}}
+
+                    <label for="skill type">Skill Type:</label>
+                    <select data-placeholder="Choose an option please" id="skillType" class="form-control chosen"
+                        class="required" data-toggle="tooltip" title="Please select a skill type">
+                        <option value="">Choose an option please</option>
+                        <option value="Front End">Front End</option>
+                        <option value="Back End">Back End</option>
+                    </select>
+
+
+
+                    <br />
+                    <button class="btn-success" type="submit" id="btn-newSkill">Add User Skill</button>
+                    <br />
+                </fieldset>
+            </form>
+        </div>
     </div>
     <div class="col-md-6 m-auto">
         <div class="card card-body">
@@ -52,8 +64,8 @@
             <div class="form-group">
                 <label for="first name">First Name</label>
                 <input type="firstName" id="firstName" name="firstName" class="form-control"
-                    placeholder="Enter First Name" value={{firstName}} tabindex="0" 
-                    pattern="[A-Za-z]" title="Letters only and no spaces" />
+                    placeholder="Enter First Name" value={{firstName}} tabindex="0" pattern="[A-Za-z]"
+                    title="Letters only and no spaces" />
             </div>
 
             <div class="form-group">
@@ -92,13 +104,14 @@
 
             <div class="form-group">
                 <label for="photo">Photo:</label>
-                <input id="photo" type="text" autocomplete="photo" required value={{photoLink}} tabindex="6" autofocus><br>
+                <input id="photo" type="text" autocomplete="photo" required value={{photoLink}} tabindex="6"
+                    autofocus><br>
             </div>
 
             <div class="form-group">
-               <label>Existing Skill Sets: 
-                   {{#each userSkills}}
-                        {{value}}
+                <label>Existing Skill Sets:
+                    {{#each userSkills}}
+                    {{value}}
                     {{/each}}
                 </label>
                 <select id="selectSkills" class="form-control chzn-select" multiple="true">
@@ -106,15 +119,15 @@
                     <option id={{id}}>{{value}}</option>
                     {{/each}}
                 </select>
-                </div>
             </div>
-           
-
-            <button class="btn-success" type="submit" id="btn-update">Update User</button>
-
         </div>
+
+
+        <a href="/dashboard"></a><button class="btn-success" type="submit" id="btn-update">Update User</button></a>
+
     </div>
-     
+</div>
+
 </div>
 
 {{!-- This code helps to give it the fancy look  --}}
