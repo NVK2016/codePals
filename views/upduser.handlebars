@@ -3,29 +3,33 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
 <link rel="stylesheet" href="../public/assets/css/style.css">
+{{!-- BOOOTSTARP ADDITIONA LFILES  --}}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
-    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F">codePals</a>
+    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F" data-toggle="tooltip" title="Navigate to my dashboard">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/allpals">View Members</a>
+                <a class="nav-link" href="/allpals" data-toggle="tooltip" title="View All code pals">View Members</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/upduser">Update Profile</a>
+                <a class="nav-link" href="/upduser" data-toggle="tooltip" title="User Information">Update Profile</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" id="headerLogo" href="/addactivity">
+                <a class="nav-link" id="headerLogo" href="/addactivity" data-toggle="tooltip" title="Create New Project/Meetup Event">
                     Create New Activity</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Sign Out</a>
+                <a class="nav-link" href="/logout" data-toggle="tooltip" title="Goodbye....see you again">Sign Out</a>
             </li>
         </ul>
     </div>
@@ -36,14 +40,10 @@
         <div class="card-body">
             <form>
                 <fieldset class="card-header">
-                    <legend class="scheduler-border">Add New Skill</legend>
+                    <legend class="scheduler-border" data-toggle="tooltip" title="Please enter acquired new Skill">Add New Skill</legend>
                     <label for="skill name" class="required"> Skill Name : </label>
                     <input type="text" id="skillName">
                     <br>
-
-
-                    {{!-- <label for="skill type">Skill Type:</label>
-                    <input type="text" id="skillType" placeholder="Front-end or Back-End Skill"><br> --}}
 
                     <label for="skill type">Skill Type:</label>
                     <select data-placeholder="Choose an option please" id="skillType" class="form-control chosen"
@@ -64,7 +64,7 @@
     </div>
     <div class="col-md-6 m-auto">
         <div class="card card-body">
-            <h1 class="text-center mb-3">
+            <h1 class="text-center mb-3" data-toggle="tooltip" title="See all my information">
                 <i class="fas fa-user-plus"></i> Update Profile
             </h1>
             <div class="form-group">
@@ -141,6 +141,10 @@
     $(function () {
         $(".chzn-select").chosen();
     });
+    //TO display tooltips using bootstrap 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 {{!-- Calling Client JS --}}

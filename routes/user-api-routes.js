@@ -1,6 +1,6 @@
 // ********************************************************************************* 
 // user-api-routes.js - this file offers a set of routes for geting & sending user data to the various handlebars
-//CRU - Create, Read & Update  DATA FOR USERS & SKILLS TABLE 
+//CRU - Create, Read & Update  DATA FOR USERS & SKILLS TABLE and its cross refernce Table usersSkills
 // *********************************************************************************
 
 // Dependencies
