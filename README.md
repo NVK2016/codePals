@@ -6,7 +6,12 @@ This application will help coonnect people with want to come together to create 
 
 This app is one spot hub to share information related to tech meetups for codePlas to broswer through the events and slect if they are interested or not. 
 
--- Screenshot of the App Page  
+<!-- ![screenshot](public/assets/img/image1.png "Screen 1") -->
+![screenshot](public/assets/img/image2.png "Screen 1")
+![screenshot](public/assets/img/image3.png "Screen 1")
+![screenshot](public/assets/img/image4.png "Screen 1")
+![screenshot](public/assets/img/image5.png "Screen 1")
+
 
 ## Table of Content
 + [Introduction](#introduction)
