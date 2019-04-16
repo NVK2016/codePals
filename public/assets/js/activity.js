@@ -75,7 +75,7 @@ $(document).ready(function () {
         })
             .done(function (result) {
                 console.log("The new activity was added successfully!")
-                window.location.href = "./dashboard";
+                window.location.href = "/dashboard";
             })
             .fail(function () {
                 console.log("There was an error when adding a new activity");
