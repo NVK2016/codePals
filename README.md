@@ -56,6 +56,8 @@ What things you need installed before running this application.
 ## Demo Link 
 <hr /> 
 
+<a href=“https://codepals.herokuapp.com/”> demo link </a> 
+
 ## <a name="builtWith"> Technologies Used </a>
 1. Node Packages 
     * **Express** - Node.js web application framework
@@ -293,7 +295,6 @@ We would like to thank our instructor **Jerome Chenette**, our awesome TA's **Sa
 * Namita Shenai - https://github.com/NVK2016
 * Shayan Anoushiravani - https://github.com/shayansea
 * Nadire Ghalip - https://github.com/NadireGh
-
 
 
 
