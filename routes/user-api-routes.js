@@ -147,9 +147,17 @@ module.exports = function (app) {
       var allSkills = []; 
 
       //Populate ALL Skills in the database in the Drop Down List 
-      db.skills.findAll({}).then(function (dbSkills) {
+      db.skills.findAll({
+          //filtering out the user already has the skill
+        // include: [{
+        //   model: db.usersSkills, as: "usersSkills", 
+        //   where: {
+        //     userId: { [Op.notIn]: userId  }
+        //   }
+        //  }]
+      }).then(function (dbSkills) {
      
-        console.log("All skills count", dbSkills.length);
+        console.log("All skills count", dbSkills);
         
         //Loop through the all skillset in the database 
         for (var i = 0; i < dbSkills.length; i++) {
@@ -231,19 +239,63 @@ module.exports = function (app) {
 
       console.log("\n User ID: ", userId , " | ", req.body);
 
+       // //the array will hold objects representing userSkills table
+       var alluserSkills = [];
+
+       //create the corresponding userSkills objects based on the ids in the arrayIds
+       if (req.body.userskills !== undefined && req.body.userskills.length > 0) {
+         for (var i = 0; i < req.body.userskills.length; i++) {
+           var newSkillObj = {
+             userId: userId,
+             skillId: req.body.userskills[i],
+             hasSkill: true
+           };
+           alluserSkills.push(newSkillObj);
+         }
+       }
+
       db.users.update(
         //Fields to update 
-        req.body
-      , {
+        {
+          firstName: req.body.firstName, 
+          lastName: req.body.lastName, 
+          //Re-generate Hashed Password for the user 
+          // passw: db.users.generateHash(req.body.password) , 
+          city : req.body.city, 
+          state : req.body.state, 
+          phone : req.body.phone, 
+          photoLink : req.body.photoLink
+        }, {
         where: {
           id: userId
         }
       }).then(function (dbUser) {
 
-        console.log("Update data" , dbUser);
+        console.log("User Information Updated" , dbUser);
+        console.log("1");
+        console.log("All new skiils ", alluserSkills);
+        
+        //insert multiple records from the array to the usersSkills table
+        db.usersSkills.bulkCreate(alluserSkills, {
+          returning: true
+        }).then(function (dbUserSkills) {
+          console.log("2");
+          console.log("User Skills added " + dbUserSkills);
+          //will have to redirect to a dashboard for the user
+          res.redirect("/dashboard");
 
-        // res.render("/upduser", dbUser)
-      });
+        })
+          .catch(function (err) {
+            console.log(err);
+            res.json(error);
+          });
+        
+          console.log("3", res.redirect);
+          //will have to redirect to a dashboard for the user
+          res.redirect("/dashboard");
+  
+        //Else catch error 
+      }).catch(err => console.log(err)); 
     } else {
       //Failed Auth then login again 
       console.log("auth", req.isAuthenticated())
