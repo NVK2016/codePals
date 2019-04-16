@@ -1,25 +1,30 @@
+{{!-- BootStrap Additional Files  --}}
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 {{!-- Calling Client JS --}}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
         {{!-- <a class="navbar-brand" href="#">
         <img src="../public/assets/img/codepals_logo-02_m.png">
     </a> --}}
-    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F">codePals</a>
+    <a class="navbar-brand" href="/dashboard" style="color: #E23B0F" data-toggle="tooltip" title="Navigate to my dashboard">codePals</a>
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/allpals">View Members</a>
+                <a class="nav-link" href="/allpals" data-toggle="tooltip" title="View All code pals">View Members</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/upduser">Update Profile</a>
+                <a class="nav-link" href="/upduser" data-toggle="tooltip" title="User Information">Update Profile</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" id="headerLogo" href="/addactivity">
+                <a class="nav-link" id="headerLogo" href="/addactivity" data-toggle="tooltip" title="Create New Project/Meetup Event">
                     Create New Activity</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/logout">Sign Out</a>
+                <a class="nav-link" href="/logout" data-toggle="tooltip" title="Goodbye....see you again">Sign Out</a>
             </li>
         </ul>
     </div>
@@ -43,7 +48,7 @@
                   {{!-- All user skills for each user --}}
                   {{#each skills}}
                   <ul>
-                    <li>{{skillType}} - {{skill}}</li>
+                    <li>{{skill}} [ {{skillType}} ]</li>
                   </ul>
                   {{/each}}
                 </p>
@@ -61,3 +66,11 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+   
+    //TO display tooltips using bootstrap 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
