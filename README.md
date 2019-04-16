@@ -235,6 +235,7 @@ Snippet of how user information is update & **BulkCreeate** of data is fired whe
 
 1. Creates the corresponding userSkills objects based on the ids grabbed from skills selected in the screen. 
 2. Then updates & inserts record on Update User Buttn click. 
+
 ...
 
  db.users.update(
