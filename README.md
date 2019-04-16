@@ -46,6 +46,13 @@ What things you need installed before running this application.
 
 Code snippets 
 
+<hr/> 
+
+
+
+
+
+
 ### Contributors: 
 * Samuel Yu
 * Halina Zmachynskaya
