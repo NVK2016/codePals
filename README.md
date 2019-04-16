@@ -11,11 +11,16 @@ This app is one spot hub to share information related to tech meetups for codePl
 ## Table of Content
 + [Introduction](#introduction)
 + [Getting Started](#gettingstarted)
++ [Built With](#builtWith)
++ [App Features](#features)
 + [DB Architecture](#dbarchiterture)
++ [DB EER Diagram](#errDB)
 + [Using bulkCreate](#bulkcreate)
 + [Authentication](#authentication)
 + [Using Handlebars Helper Functions](#helpers)
 + [Update Activity Form](#updactivity)
++ [CRU Profile & Skills](#updProfile)
++ [View Pals](#viewallpals)
 
 ## <a name="gettingstarted"> Getting Started </a>
 <hr/>
@@ -28,17 +33,6 @@ What things you need installed before running this application.
 + [Node](https://nodejs.org/en/download/)
 + [npm](https://docs.npmjs.com/cli/install)
 + [MySQL](https://dev.mysql.com/downloads/windows/installer/8.0.html)
-
-<!-- I feel like the snippet below is not needed- Samuel -->
-
-    npm install 
-    npm install sequelize 
-    npm install mysql2
-    npm install express 
-    npm install express-handlebars 
-    npm install passport
-    npm install bcryptjs
-    -- npm install dotenv --save
 
 ```
     npm install 
@@ -62,22 +56,29 @@ What things you need installed before running this application.
 ## Demo Link 
 <hr /> 
 
-## Built With 
+## <a name="builtWith"> Built With </a>
 1. Node Packages 
     * Express - Node.js web application framework
      * Express Handlebars 
      * Passport - authentication for Node.js
      * Sequelize - promise-based ORM for Node.js
+     * MySQL - to store all our records.
      * bcrypt - Encrypt password when save in database.
     
  2. HTML
     * CSS - custom css style 
-    * Bootstrap + Chosen   - The CSS framework used.
+    * Bootstrap  The CSS framework used.
+    * Chosen Jquery Plugin - makes long, unwieldy select boxes much more user-friendly along with its multi-select options. 
+    * Sketch - to design wireframes. 
+    * Illustrator - to design the awesome logo. 
 
 
 
-## Features 
+## <a name="features"> Features </a> 
 <hr/> 
+
+1.  
+2. 
 
 #### <a name="dbarchiterture"> DB architecture </a>
 
@@ -86,6 +87,14 @@ The code snippet below shows how to add multiple associations to a model:
 
 ![DB models many-to-many](./public/assets/img/many-to-many.png)
 <hr/> 
+
+#### <a name="errDB">EER Diagram </a>
+
+The diagram belows gives you a better idea how the relationships are created. One to Many & how Many to MAny is established.
+
+![ERR Diagram](./public/assets/img/EERDiagram_codePals.png)
+
+<hr/>
 
 #### <a name="bulkcreate"> Using bulkCreate() in nested db calls </a>
 
@@ -165,6 +174,27 @@ and used inside the handlebars templete to set selection for the activity type:
 #### <a name="updactivity"> UpdateActivity Form </a>
 
 Below is an example of our GET method for the UpdateActivity form. We made nested calls to the database to prepopulate the form. In the first call, we selected the corresponding activity data from the activity table and all users participating in the activity. Then in the second call we selected from the database the users who were not participating in the activity, and added their names to the drop-down control at the bottom so they can be invited to the activity.
+
+![UpdateActivity Form](./public/assets/img/upd-activity-form.png)
+
+<hr/> 
+
+#### <a name="updProfile"> CRU Profile & Skill </a>
+
+What **CRU** ?? 
+
+This is where it all happens in one place **YES CRU** guy :) 
+
+1. **_Create Record_**  : **PUT** METHOD is called to populate all the user information. 
+2. **_Retrieve Record_** : **GET** METHOD is called to populate all the user information. 
+3. **_Update Record_** : 
+
+![UpdateActivity Form](./public/assets/img/upd-activity-form.png)
+
+<hr/> 
+
+#### <a name="viewallPals"> View all codePals </a>
+
 
 ![UpdateActivity Form](./public/assets/img/upd-activity-form.png)
 
