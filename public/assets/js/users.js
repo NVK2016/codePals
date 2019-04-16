@@ -7,14 +7,14 @@ $(document).ready(function () {
   //Update Profile when the submits data expect for the email address 
   $("#btn-update").on("click", function () {
 
-    alert("updating profile");
+    // alert("updating profile");
 
-    //Loop through all the selected skills 
+    //Loop through all the selected skills from Chosen DropoDOown list 
     var newSkills = [];
     $.each($("#selectSkills option:selected"), function(){            
       newSkills.push($(this).attr("id"));
     });
-    alert("You have selected the  - " + newSkills.join(", "));
+    // alert("You have selected the  - " + newSkills.join(", "));
 
     // Constructing a updateProfile object to hand to the database
     var updateUser = {
