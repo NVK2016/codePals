@@ -11,7 +11,7 @@ This app is one spot hub to share information related to tech meetups for codePl
 ## Table of Content
 + [Introduction](#introduction)
 + [Getting Started](#gettingstarted)
-+ [Built With](#builtWith)
++ [Technologies Used](#builtWith)
 + [App Features](#features)
 + [DB Architecture](#dbarchiterture)
 + [DB EER Diagram](#errDB)
@@ -56,19 +56,20 @@ What things you need installed before running this application.
 ## Demo Link 
 <hr /> 
 
-## <a name="builtWith"> Built With </a>
+## <a name="builtWith"> Technologies Used </a>
 1. Node Packages 
-    * Express - Node.js web application framework
-     * Express Handlebars 
-     * Passport - authentication for Node.js
-     * Sequelize - promise-based ORM for Node.js
-     * MySQL - to store all our records.
-     * bcrypt - Encrypt password when save in database.
+    * **Express** - Node.js web application framework
+     * **Express Handlebars** 
+     * **Express Handlebars Helpers** 
+     * **Passport** - authentication for Node.js
+     * **Sequelize** - promise-based ORM for Node.js
+     * **MySQL** - to store all our records.
+     * **bcrypt** - Encrypt password when save in database.
     
  2. HTML
     * CSS - custom css style 
     * Bootstrap  The CSS framework used.
-    * Chosen Jquery Plugin - makes long, unwieldy select boxes much more user-friendly along with its multi-select options. 
+    * **Chosen Jquery Plugin** - makes long, unwieldy select boxes much more user-friendly along with its multi-select options. 
     * Sketch - to design wireframes. 
     * Illustrator - to design the awesome logo. 
 
@@ -185,28 +186,112 @@ What **CRU** ??
 
 This is where it all happens in one place **YES CRU** guy :) 
 
-1. **_Create Record_**  : **PUT** METHOD is called to populate all the user information. 
-2. **_Retrieve Record_** : **GET** METHOD is called to populate all the user information. 
-3. **_Update Record_** : 
+1. **_Create Record_**  : **POST** METHOD is called to insert into the main table its cross reference table. 
+...
 
-![UpdateActivity Form](./public/assets/img/upd-activity-form.png)
+ //Grabs the logged in user ID 
+      var userId = req.session.passport.user.id;
+
+      //INSERT INTO skill TABLE 
+      db.skills.create({
+        skill: req.body.skill,
+        skillType: req.body.skillType
+      }).then(function (dbSkill) {
+        console.log(dbSkill);
+        //INSERT INTO cross-reference tablee the same into userSkill Table for the logged in user 
+        db.usersSkills.create({
+          userId: userId,
+          skillId: dbSkill.id,
+          hasSkill: true
+        }).then(function (dbuserSkill) {
+          console.log("userskill details", dbuserSkill); 
+
+        });
+...
+More Information can be found under the **routes/useer-api-routes.js** under **app.post('/addskill')**
+
+2. **_Retrieve Record_** : **GET** METHOD is called to populate all the user information. 
+NESTED LOOP on the data receives froom select statements. 
+  1. Firstly, loop through all user & finding the information for the logged in user. 
+  2. Secondly, the skills model select query gets all the skills related to Logged in user which interenally maps to the cross reference USERSKILL table. 
+  3. EXAMPLE OF **JOINS in SEquelize**. 
+
+...
+
+//Grab data from users, usersSkills[internally] & exisiting skills for the Logged in user 
+      db.users.findAll({
+        where: { id: userId },
+        //Include user skills too 
+        include: [{
+          model: db.skills, as: "skills"
+        }]
+      }).then(function (dbUserInfo) {
+...
+More Information can be found under the **routes/useer-api-routes.js** under **app.get('/upuser')**
+
+3. **_Update Record_** : **PUT** Method is called to update an exisiting user data. 
+
+Snippet of how user information is update & **BulkCreeate** of data is fired when a useer selects multiple skills to update. 
+
+1. Creates the corresponding userSkills objects based on the ids grabbed from skills selected in the screen. 
+2. Then updates & inserts record on Update User Buttn click. 
+...
+
+ db.users.update(
+        //Fields to update 
+        {
+          firstName: req.body.firstName, 
+        }, {
+        where: {
+          id: userId
+        }
+      }).then(function (dbUser) {
+        
+        //insert multiple records from the array to the usersSkills table
+        db.usersSkills.bulkCreate(alluserSkills, {
+          returning: true
+        }).then(function (dbUserSkills) {
+     
+...
+
+More Information can be found under the **routes/useer-api-routes.js** under **app.put('/upduser')**
 
 <hr/> 
 
 #### <a name="viewallPals"> View all codePals </a>
 
+Here as you see in the snippet we are using Sequelize Operators to filter out data. In this case we want to view all codeepals expect for the logged in user. Below piece of code helps me achieve the goal. 
 
-![UpdateActivity Form](./public/assets/img/upd-activity-form.png)
+...
+
+  db.users.findAll({
+        //Excluded the logged in user only activee members 
+        where: {
+            active: 1 , 
+            //using the not operator of sequlize i.e example: userid NOT "1"
+            [Op.not] : [{id: userId}]
+          },
+          //Include user skills too for all th members 
+        include: [{
+          model: db.skills, as: "skills"
+        }] ,
+      }).then(function (dbUsers) {
+
+...
 
 <hr/> 
 
+### Acknowledgements
+
+We would like to thank our instructor **Jerome Chenette**, our awesome TA's **Sajeel**, **Jacob**, and **Jimmy**, and our visiting instructor **Amber** for all of their help along the way.
+
 
 ### Contributors: 
-* Samuel Yu
-* Halina Zmachynskaya
-* Namita Shenai 
-* Shayan Anoushiravani
-* Nadire Ghalip
+* Samuel Yu - https://github.com/yusungsamuel
+* Halina Zmachynskaya - https://github.com/Haldevel
+* Namita Shenai - https://github.com/NVK2016
+* Shayan Anoushiravani - https://github.com/shayansea
+* Nadire Ghalip - https://github.com/NadireGh
 
 
 
