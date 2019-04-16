@@ -1,6 +1,6 @@
 // ********************************************************************************* 
 // user-api-routes.js - this file offers a set of routes for geting & sending user data to the various handlebars
-//CRU - Create, Read & Update  DATA FOR USERS & SKILLS TABLE 
+//CRU - Create, Read & Update  DATA FOR USERS & SKILLS TABLE and its cross refernce Table usersSkills
 // *********************************************************************************
 
 // Dependencies
@@ -242,7 +242,7 @@ module.exports = function (app) {
        // //the array will hold objects representing userSkills table
        var alluserSkills = [];
 
-       //create the corresponding userSkills objects based on the ids in the arrayIds
+       //create the corresponding userSkills objects based on the ids grabbed from skills selected in thee screen
        if (req.body.userskills !== undefined && req.body.userskills.length > 0) {
          for (var i = 0; i < req.body.userskills.length; i++) {
            var newSkillObj = {
