@@ -11,7 +11,11 @@ This app is one spot hub to share information related to tech meetups for codePl
 ## Table of Content
 + [Introduction](#introduction)
 + [Getting Started](#gettingstarted)
++ [DB Architecture](#dbarchiterture)
++ [Using bulkCreate](#bulkcreate)
 + [Authentication](#authentication)
++ [Using Handlebars Helper Functions](#helpers)
++ [Update Activity Form](#updactivity)
 
 ## <a name="gettingstarted"> Getting Started </a>
 <hr/>
@@ -75,7 +79,7 @@ What things you need installed before running this application.
 ## Features 
 <hr/> 
 
-#### <a name="authentication"> DB architecture </a>
+#### <a name="dbarchiterture"> DB architecture </a>
 
 Our database architecture has 3 main tables to hold users, activities and skills, with users and activities and users and skills having many-to many relationships, since a user can have many activities and one activity can have many participating users, and each user can have many skills, and one skill can belong to many users. For each inserted activity into the activities table we had to insert multiple records into the join usersActivities table (one activity associated with each participating user) using Sequelize bulkCreate() inside nested calls to the database.
 The code snippet below shows how to add multiple associations to a model:
@@ -83,7 +87,7 @@ The code snippet below shows how to add multiple associations to a model:
 ![DB models many-to-many](./public/assets/img/many-to-many.png)
 <hr/> 
 
-#### <a name="authentication"> Using bulkCreate() in nested db calls </a>
+#### <a name="bulkcreate"> Using bulkCreate() in nested db calls </a>
 
 The code snippet below demonstrates usage of bulkCreate() in the nested database calls. As a first step, we created an activity record inside the Activity table, passing the values taken from our CreateActivity form. Then inside the promise we used the data passed back to the callback function, retrieved  the new activity id returned by Sequelize and used it to create an array of multiple objects representing the usersActivities join table, which we passed into the bulkCreate() to insert multiple userActivity objects.
 
@@ -144,7 +148,7 @@ passport.use("local-signup", new LocalStrategy({
 
 <hr/> 
 
-#### <a name="authentication"> Using Handlebars helper functions </a>
+#### <a name="helpers"> Using Handlebars helper functions </a>
 
 We used handlebars helper functions for our Update Activity form radio buttons to show the current activity selection between Project and Meetup. Since the database returns either “project” or “meetup” string for a type of activity, we had to create simple helper functions which return “checked” if the passed string was “project” for a project type (as well as "meetup" if it is current activity type). The functions were registered as helper functions inside our server.js, and then called from the radio buttons tags when setting their checked property.
 
@@ -158,7 +162,7 @@ and used inside the handlebars templete to set selection for the activity type:
 
 <hr/> 
 
-#### <a name="authentication"> UpdateActivity Form </a>
+#### <a name="updactivity"> UpdateActivity Form </a>
 
 Below is an example of our GET method for the UpdateActivity form. We made nested calls to the database to prepopulate the form. In the first call, we selected the corresponding activity data from the activity table and all users participating in the activity. Then in the second call we selected from the database the users who were not participating in the activity, and added their names to the drop-down control at the bottom so they can be invited to the activity.
 
