@@ -9,18 +9,25 @@ $(document).ready(function () {
 
     // alert("updating profile");
 
+    //Loop through all the selected skills from Chosen DropoDOown list 
+    var newSkills = [];
+    $.each($("#selectSkills option:selected"), function(){            
+      newSkills.push($(this).attr("id"));
+    });
+    // alert("You have selected the  - " + newSkills.join(", "));
+
     // Constructing a updateProfile object to hand to the database
     var updateUser = {
       firstName: $("#firstName").val().trim(),
       lastName: $("#lastName").val().trim(),
-      passw: $("#password").val().trim(),
+      // passw: $("#password").val().trim(),
       // email: $("#email").val().trim(),
       city: $("#city").val().trim(),
       state: $("#state").val().trim(),
       phone: $("#phone").val().trim(),
       photoLink: $("#photo").val().trim(),
-      //Take from query 
-      // userId: id
+      //All the addiotional skills added 
+      userskills: newSkills
     };
 
     // alert("Data", JSON.stringify(updateUser)); 

@@ -24,7 +24,7 @@ module.exports = function (app) {
 
         if (req.isAuthenticated()) {
             // console.log(true)
-            // console.log(req.session.passport.user);
+            console.log(req.session.passport.user);
             var usId = req.session.passport.user.id;
 
             db.activities.findAll({
@@ -33,12 +33,12 @@ module.exports = function (app) {
                     actType: "meetup"
                 }
             }).then(function (allActivity) {
-                // console.log("All Activities: ", allActivity)
+                console.log("All Activities: ", allActivity)
 
                 var allActArr = [];
                 for (var i = 0; i < allActivity.length; i++) {
-                    allActArr.push(allActivity[i].dataValues)
-                    allActArr[i].isMine = (allActivity[i].dataValues.adminId === usId)
+                    allActArr.push(allActivity[i].dataValues);
+                    allActArr[i].isMine = (allActivity[i].dataValues.adminId === usId);
                 };
 
                 db.users.findOne({
@@ -164,7 +164,12 @@ module.exports = function (app) {
                 var addedUsers = dbActivity[0].users;
                 var addeduserIds = [];  //the array contains ids of the invited users
 
-                for (var i = 0; i < addedUsers.length; i++) {
+                /*//this array will be used below to filter the users who were not invited
+                  //using notIN clause of sequelize ORM 
+                  var addedUsers = dbActivity[0].users;
+                  var addeduserIds = [];  //the array contains ids of the invited users */
+
+                  for (var i = 0; i < addedUsers.length; i++) {
                     addeduserIds.push(addedUsers[i].id);
                 }
 
@@ -233,6 +238,7 @@ module.exports = function (app) {
                         interested: false
                     };
                     allInvited.push(inviteeObj);
+                    console.log(allInvited);
                 }
 
                 //create the usersActivities object for the admin and push it to the array
@@ -243,6 +249,7 @@ module.exports = function (app) {
                 };
                 allInvited.push(adminObj);
 
+                console.log("allInvited: " + allInvited);
                 //insert multiple records from the array to the usersActivities table
                 db.usersActivities.bulkCreate(allInvited, {
                     returning: true
@@ -266,72 +273,72 @@ module.exports = function (app) {
     //PUT route for updating activity
     app.put('/updactivity', function (req, res) {
 
-        if (req.isAuthenticated()) {
-            console.log("The user is authenticated");
-            /*   console.log(req.session.passport.user);
-              var usId = req.session.passport.user.id; */
+        /*   if (req.isAuthenticated()) { */
+        console.log("The user is authenticated");
+        /*   console.log(req.session.passport.user);
+          var usId = req.session.passport.user.id; */
 
-            console.log(req.body.activity);
-            var obj = JSON.parse(req.body.activity); //getting an object from json 
-            console.log(obj);
+        console.log(req.body.activity);
+        var obj = JSON.parse(req.body.activity); //getting an object from json 
+        console.log(obj);
 
-            //the array with newly selected users will be needed 
-            //when we do bulkInsert to the join usersActivities table
-            var arrayIds = obj["participantsIds"];
+        //the array with newly selected users will be needed 
+        //when we do bulkInsert to the join usersActivities table
+        var arrayIds = obj["participantsIds"];
 
-            console.log('Updating an activity!');
-            db.activities.update(
-                {
-                    title: obj.title,
-                    description: obj.description,
-                    location: obj.location,
-                    estimateStartDate: obj.estimateStartDate,
-                    actType: obj.actType,
-                    active: obj.active
-                },
-                {
-                    where: {
-                        //id: req.body.id
-                        id: obj.activityId
-                    }
-                }).
-                then(function (dbActivity) {
+        console.log('Updating an activity!');
+        db.activities.update(
+            {
+                title: obj.title,
+                description: obj.description,
+                location: obj.location,
+                estimateStartDate: obj.estimateStartDate,
+                actType: obj.actType,
+                active: obj.active
+            },
+            {
+                where: {
+                    //id: req.body.id
+                    id: obj.activityId
+                }
+            }).
+            then(function (dbActivity) {
 
-                    //the array will hold objects representing usersActivities table
-                    var newInvited = [];
+                //the array will hold objects representing usersActivities table
+                var newInvited = [];
 
-                    //create the corresponding usersActivities objects based on the ids in the arrayIds
-                    for (var i = 0; i < arrayIds.length; i++) {
-                        var inviteeObj = {
-                            userId: parseInt(arrayIds[i]),
-                            activityId: obj.activityId,
-                            interested: false
-                        };
-                        newInvited.push(inviteeObj);
-                    }
-                    //CODE FOR BULK INSERT
-                    //do bulk insert here to add new users to the join userActivity table
-                    //insert multiple records from the array to the usersActivities table
-                    db.usersActivities.bulkCreate(newInvited, {
-                        returning: true
-                    }).then(function (dbUsersActivities) {
-                        console.log("Activity updated: " + dbUsersActivities.dataValues);
-                        res.json(dbUsersActivities);
-                        //res.redirect("/dashboard");  //REDIRECT WHEN TESTED
-                        //will have to redirect to a dashboard for the user
-                    })
-                        .catch(function (err) {
-                            console.log(err);
-                            res.json(error);
-                        });
+                //create the corresponding usersActivities objects based on the ids in the arrayIds
+                for (var i = 0; i < arrayIds.length; i++) {
+                    var inviteeObj = {
+                        userId: parseInt(arrayIds[i]),
+                        activityId: obj.activityId,
+                        interested: false
+                    };
+                    newInvited.push(inviteeObj);
+                }
+                //CODE FOR BULK INSERT
+                //do bulk insert here to add new users to the join userActivity table
+                //insert multiple records from the array to the usersActivities table
+                db.usersActivities.bulkCreate(newInvited, {
+                    returning: true
+                }).then(function (dbUsersActivities) {
+                    console.log("Activity updated: " + dbUsersActivities.dataValues);
+                    res.json(dbUsersActivities);
+                    //res.redirect("/dashboard");  //REDIRECT WHEN TESTED
+                    //will have to redirect to a dashboard for the user
+                })
+                    .catch(function (err) {
+                        console.log(err);
+                        res.json(error);
+                    });
 
-                    //res.redirect("/dashboard");
-                });
-        }
-        else {
-            console.log("auth", req.isAuthenticated());
-            res.redirect("/");
-        }
+                //res.redirect("/dashboard");
+            });
+        /*  }
+         else {
+             console.log("auth", req.isAuthenticated());
+             res.redirect("/");
+         } */
     });
 };
 
