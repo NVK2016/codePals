@@ -78,8 +78,10 @@ What things you need installed before running this application.
 ## <a name="features"> Features </a> 
 <hr/> 
 
-1.  
-2. 
+1. Create a User Profile, and access the User Dashboard.
+2. Create a Project Activity, and then invite other Users.
+3. Create a Meetup Activity, and post to all Users.
+4. View all codePals & potential connect with them by sending an email. 
 
 #### <a name="dbarchiterture"> DB architecture </a>
 
@@ -208,6 +210,7 @@ This is where it all happens in one place **YES CRU** guy :)
 
         });
 ...
+
 More Information can be found under the **routes/useer-api-routes.js** under **app.post('/addskill')**
 
 2. **_Retrieve Record_** : **GET** METHOD is called to populate all the user information. 
